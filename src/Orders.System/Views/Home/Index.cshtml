@@ -1,0 +1,82 @@
+﻿@* For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860 *@ @{ } @section
+scripts{
+    <script src="~/js/main.js"></script>
+}
+
+<div class="container-fluid">
+    <div class="col-md-5">
+
+    </div>
+    <div class="col-md-7" :controller="loginCtrl">
+        <form id="loginPanel" :on-submit="login($event)">
+            <input type="text" :duplex="user.loginId" />
+            <input type="password" :duplex="user.password" />
+            <input type="submit" value="登录" />
+        </form>
+        <div :if="user.isLogin">
+            {{user.name}}
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div id="symbolList" :controller="symbolList" class="col-md-2">
+
+        <ul>
+            <li :for="(id,el) in @@symbols">
+                {{@@el.active}}
+                <a href="javascript:;" :class="el.active?'symbol-active':''" :click="active(el)">
+                    {{el.info.name}}
+                </a> {{el.price}}
+            </li>
+        </ul>
+
+    </div>
+
+
+    <div id="main" class="col-md-8">
+
+    </div>
+
+    <div id="buy" class="col-md-2" :controller="investmentCtrl">
+        <table>
+            <tr>
+                <td>Volume:</td>
+                <td>
+                    <input type="text" :duplex="openOrderInfo.volume">
+                </td>
+            <tr>
+                <td>price:</td>
+                <td>{{@@symbol.price}}</td>
+            </tr>
+            <tr>
+                <td>symbol:</td>
+                <td>{{@@symbol.info.name}}</td>
+            <tr>
+                <td>
+                    <button :click="up()">up</button>
+                    <button :click="down()">down</button>
+                </td>
+        </table>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="col-md-6">
+        <div id="admin-order-output" :controller="orderAdminCtrl">
+            <table>
+                <tr>
+                    <td>订单号</td>
+                    <td>建仓Price</td>
+                    <td>ExecuteCloseTime</td>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

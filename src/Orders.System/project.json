@@ -1,0 +1,78 @@
+{
+  "dependencies": {
+    "Orders.Core": "1.0.0-*",
+    "Orders.Quotations": "1.0.0-*",
+    //"Microsoft.Extensions.Configuration.EnvironmentVariabcdles": "1.0.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
+    "Ornament.WebSockets": "1.1.0",
+    "Orders.System.Demo": "1.0.0-*",
+    "Orders.Quotations.Publishers.WebSocket": "1.0.0-*",
+    "Orders.Quotations.Providers.Redis": "1.0.0-*",
+    "Orders.Quotations.Stores.Dapper": "1.0.0-*",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
+    "Orders.Stores.Dapper": "1.0.0-*",
+    "Orders.Notify.WebScoket": "1.0.0-*",
+
+    "Microsoft.AspNetCore.Identity": "1.1.0",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
+    "Microsoft.Extensions.Logging.Debug": "1.1.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
+    "Microsoft.NETCore.App": {
+      "version": "1.1.0",
+      "type": "platform"
+    },
+    "HS.Identity": "1.0.0-*",
+    "Ornament.Uow.DbConnection": "1.1.0",
+    "Ornament.Uow.Web": "0.2.1",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0",
+    "Microsoft.AspNetCore.Razor.Tools": {
+      "version": "1.1.0-preview4-final",
+      "type": "build"
+    }
+  },
+  "tools": {
+    "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true
+  },
+
+  "runtimeOptions": {
+    "configProperties": {
+      "System.GC.Server": true
+    }
+  },
+
+  "publishOptions": {
+    "include": [
+      "wwwroot",
+      "**/*.cshtml",
+      "appsettings.json",
+      "web.config"
+    ]
+  },
+
+  "scripts": {
+
+    "prepublish": [ "bower install", "gulp" ],
+
+    "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+  }
+}
