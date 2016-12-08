@@ -4,6 +4,6 @@
     {
         int Priority { get; set; }
         string Message { get; }
-        bool IsPass(OrderCreateDto order, OrderContext context);
+        bool IsPass(OpenOrderInfo openOrder, Games.Game game, string user, OrderContext context);
     }
 }

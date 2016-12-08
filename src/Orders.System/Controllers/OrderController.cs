@@ -9,21 +9,17 @@ namespace Order.System.Controllers
     [Route("api/[controller]")]
     public class OrderController : Controller
     {
-        private readonly IOrderStore _orderStore;
-        private readonly QuotationContext _quotationContext;
-        private readonly OrderContext _orderContext;
+        private readonly OpenOrderService _openOrderService;
 
-        public OrderController(IOrderStore orderStore,QuotationContext quotationContext,OrderContext orderContext)
+        public OrderController(OpenOrderService openOrderService)
         {
-            _orderStore = orderStore;
-            _quotationContext = quotationContext;
-            _orderContext = orderContext;
+            _openOrderService = openOrderService;
         }
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new[] {"value1", "value2"};
+            return new[] { "value1", "value2" };
         }
 
         // GET api/values/5
@@ -35,9 +31,9 @@ namespace Order.System.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] OrderCreateDto value)
+        public OrderCreatedResult Post([FromBody] OpenOrderInfo value)
         {
-
+            return _openOrderService.CreateOrder(value, "demo-user");
         }
 
         // PUT api/values/5

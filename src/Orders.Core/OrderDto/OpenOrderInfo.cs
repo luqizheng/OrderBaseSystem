@@ -1,22 +1,17 @@
 ﻿using System;
-using Orders.Games;
 using Orders.Quotations;
 
 namespace Orders
 {
-    public class OrderCreateDto
+    public class OpenOrderInfo
     {
+        public OpenOrderInfo()
+        {
+            ArriveDateTime = DateTime.Now;
+        }
         /// <summary>
         /// </summary>
-        public string User { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public int SymbolId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public decimal Amount { get; set; }
+        public decimal Volume { get; set; }
 
         /// <summary>
         /// </summary>
@@ -25,7 +20,7 @@ namespace Orders
         /// <summary>
         ///     到达服务器时间
         /// </summary>
-        public DateTime ArriveDateTime { get; set; }
+        public DateTime ArriveDateTime { get; }
 
         /// <summary>
         ///     客户端提交时间。

@@ -19,7 +19,7 @@ namespace Orders.Collections
                 throw new ArgumentOutOfRangeException(nameof(order), "Order's Id should not be empty or null.");
 
             _pool.Add(order.Id, order);
-            TotalAmount += order.Amount;
+            TotalAmount += order.Volume;
         }
 
         public void Remove(Order order)
@@ -30,7 +30,7 @@ namespace Orders.Collections
 
 
             _pool.Remove(order.Id);
-            TotalAmount -= order.Amount;
+            TotalAmount -= order.Volume;
         }
     }
 }

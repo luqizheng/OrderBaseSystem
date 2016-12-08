@@ -1,4 +1,6 @@
-﻿namespace Orders.Policy.OrderPolices
+﻿using Orders.Games;
+
+namespace Orders.Policy.OrderPolices
 {
     public class OrderCreatingCheckingTimespanPolicy : IOrderPolicy
     {
@@ -12,14 +14,14 @@
         public int Priority { get; set; }
         public string Message => "两张单之间不能超过" + _orderSeconds + "秒";
 
-        public bool IsPass(OrderCreateDto order, OrderContext context)
+        public bool IsPass(OpenOrderInfo openOrder, Game game, string user, OrderContext context)
         {
             var lastOrder =
-                context.UncloseOrders.Statistics.GetLastOrder(order.SymbolId, order.User);
+                context.UncloseOrders.Statistics.GetLastOrder(game.Symbol.Id, user);
 
             if (lastOrder == null)
                 return true;
-            return (order.ArriveDateTime - lastOrder.CreateTime).TotalSeconds > _orderSeconds;
+            return (openOrder.ArriveDateTime - lastOrder.CreateTime).TotalSeconds > _orderSeconds;
         }
     }
 }

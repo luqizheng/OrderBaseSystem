@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using Orders.Quotations;
 using Ornament;
 
 namespace Orders.Games
 {
-    public class GameType
+    public class Game
     {
         public int Id { get; set; }
-        public GameType()
+        public Game()
         {
             TimePeriods = new Dictionary<DayOfWeek, TimePeriod>();
         }
 
+        public Symbol Symbol { get; set; }
         /// <summary>
         /// </summary>
         public string Name { get; set; }

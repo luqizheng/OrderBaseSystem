@@ -1,4 +1,5 @@
-﻿using Orders.Quotations;
+﻿using Orders.Games;
+using Orders.Quotations;
 
 namespace Orders.Policy
 {
@@ -9,6 +10,6 @@ namespace Orders.Policy
         /// </summary>
         int Priority { get; }
         string Message { get; }
-        bool TryGetPrice(QuotationContext context,OrderCreateDto order, out Quotation price);
+        bool TryGetPrice(QuotationContext context,OpenOrderInfo openOrder,Game game, out Quotation price);
     }
 }

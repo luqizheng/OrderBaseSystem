@@ -1,4 +1,6 @@
-﻿namespace Orders.Policy.OrderPolices
+﻿using Orders.Games;
+
+namespace Orders.Policy.OrderPolices
 {
     /// <summary>
     /// 
@@ -20,15 +22,15 @@
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="order"></param>
+        /// <param name="openOrder"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public bool IsPass(OrderCreateDto order, OrderContext context)
+        public bool IsPass(OpenOrderInfo openOrder, Game game, string user, OrderContext context)
         {
             decimal amount;
             int
                 orderCount;
-            context.Statistics.OrderCount(order.SymbolId, order.User, out amount, out orderCount);
+            context.Statistics.OrderCount(game.Symbol.Id, user, out amount, out orderCount);
 
             return amount >= MaxAmount;
         }

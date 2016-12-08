@@ -36,12 +36,10 @@ namespace Orders.Stores
             Order order;
 
             while (_pools.TryPeek(out order))
-            {
-                if (order.ExecuteCloseTime < closeDateTime)
+                if (order.CloseInfo.ExpireDateTime < closeDateTime)
                 {
                     if (_pools.TryTake(out order))
-                    {
-                        if (order.ExecuteCloseTime < closeDateTime)
+                        if (order.CloseInfo.ExpireDateTime < closeDateTime)
                         {
                             result.Add(order);
                             Statistics.Remove(order);
@@ -50,11 +48,9 @@ namespace Orders.Stores
                         {
                             _pools.TryAdd(order);
                         }
-                    }
                 }
                 else
                     break;
-            }
             return result;
         }
 
@@ -62,7 +58,7 @@ namespace Orders.Stores
         {
             public int Compare(Order x, Order y)
             {
-                return x.ExecuteCloseTime.CompareTo(y.ExecuteCloseTime);
+                return x.CloseInfo.ExpireDateTime.CompareTo(y.CloseInfo.ExpireDateTime);
             }
         }
     }

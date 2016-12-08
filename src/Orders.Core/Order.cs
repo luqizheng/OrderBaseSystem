@@ -1,4 +1,5 @@
 ﻿using System;
+using Orders.Games;
 using Orders.Quotations;
 
 namespace Orders
@@ -15,18 +16,17 @@ namespace Orders
 
         /// <summary>
         /// </summary>
-        /// <param name="amount"></param>
+        /// <param name="volume"></param>
         /// <param name="direction"></param>
-        public Order(decimal amount, Direction direction) : this()
+        public Order(decimal volume, Direction direction) : this()
         {
-            if (Amount <= 0)
-                throw new ArgumentOutOfRangeException(nameof(amount), "should be greater than 0");
+            if (Volume <= 0)
+                throw new ArgumentOutOfRangeException(nameof(volume), "should be greater than 0");
 
-            Amount = amount;
+            Volume = volume;
             Direction = direction;
         }
 
-        public virtual decimal WinRate { get; set; } = 0.5m;
 
         /// <summary>
         ///     收到报价请求的时间。
@@ -42,18 +42,16 @@ namespace Orders
         /// </summary>
         public virtual Direction Direction { get; set; }
 
-        /// <summary>
-        ///     执行关闭订单的时间。
-        /// </summary>
-        public virtual DateTime ExecuteCloseTime { get; set; }
 
         /// <summary>
+        ///     订单执行完成的时间,并不是close-order时间
         /// </summary>
         public virtual DateTime? CompleteTime { get; set; }
 
+
         /// <summary>
         /// </summary>
-        public virtual decimal Amount { get; set; }
+        public virtual decimal Volume { get; set; }
 
         /// <summary>
         /// </summary>
@@ -69,13 +67,8 @@ namespace Orders
 
         /// <summary>
         /// </summary>
-        public virtual Symbol Symbol { get; set; }
+        public virtual Game Game { get; set; }
 
-        /// <summary>
-        /// </summary>
-        public Quotation OpenPrice { get; private set; }
-
-        //public DateTime? OpenTime { get; set; }
 
         /// <summary>
         /// </summary>
@@ -83,18 +76,23 @@ namespace Orders
 
         /// <summary>
         /// </summary>
-        public Quotation ClosePrice { get; private set; }
+        public CloseOrderInformation CloseInfo { get; } = new CloseOrderInformation();
+
+        /// <summary>
+        /// </summary>
+        public OpenOrderInformation OpenInfo { get; } = new OpenOrderInformation();
 
         /// <summary>
         /// </summary>
         /// <param name="openPrice"></param>
-        public void Confirm(Quotation openPrice)
+        public void Open(Quotation openPrice)
         {
             if (openPrice == null)
                 throw new ArgumentNullException(nameof(openPrice));
+
             ConfirmDateTime = DateTime.Now;
-            OpenPrice = openPrice;
-          
+            OpenInfo.OpenPrice = openPrice;
+            CompleteTime = Game.GetCloseTime(openPrice.ArrivedTime);
             Status = OrderStatus.Opening;
         }
 
@@ -102,17 +100,34 @@ namespace Orders
         {
             if (closePrice == null)
                 throw new ArgumentNullException(nameof(closePrice));
-            CompleteTime = DateTime.Now;
-            ClosePrice = closePrice;
 
+            CloseInfo.ClosePrice = closePrice;
+            CompleteTime = DateTime.Now;
             Status = OrderStatus.Completed;
 
-            if (closePrice == OpenPrice)
+            if (closePrice == OpenInfo.OpenPrice)
                 Profit = 0;
-            else if (closePrice.Bid > OpenPrice.Bid)
-                Profit = Direction == Direction.Down ? -Amount : Amount*WinRate;
+            else if (closePrice.Bid > OpenInfo.OpenPrice.Bid)
+                Profit = Direction == Direction.Down ? -Volume : Volume*Game.Rate;
             else
-                Profit = Direction == Direction.Up ? -Amount : Amount*WinRate;
+                Profit = Direction == Direction.Up ? -Volume : Volume*Game.Rate;
+        }
+
+        public class OpenOrderInformation
+        {
+            public Quotation OpenPrice { get; set; }
+
+            public DateTime? ClientPostTime { get; set; }
+        }
+
+        public class CloseOrderInformation
+        {
+            public Quotation ClosePrice { get; internal set; }
+
+            /// <summary>
+            ///     到期
+            /// </summary>
+            public DateTime ExpireDateTime { get; internal set; }
         }
     }
 }

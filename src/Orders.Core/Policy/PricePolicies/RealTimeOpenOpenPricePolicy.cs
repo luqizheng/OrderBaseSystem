@@ -17,16 +17,16 @@ namespace Orders.Policy.PricePolicies
         public string Message => "市价已变无法交易";
 
 
-        public bool TryGetPrice(QuotationContext context, OrderCreateDto order, out Quotation price)
+        public bool TryGetPrice(QuotationContext context, OpenOrderInfo openOrder, Games.Game game, out Quotation price)
         {
-            var startDateTime = order.ClientPostTime; //客户端提交时间。
-            var arriveDateTime = order.ArriveDateTime; //服务端交换时间
+            var startDateTime = openOrder.ClientPostTime; //客户端提交时间。
+            var arriveDateTime = openOrder.ArriveDateTime; //服务端交换时间
 
-            var matchesPrice = context.GetQuotation(order.SymbolId, startDateTime, arriveDateTime);
+            var matchesPrice = context.GetQuotation(game.Symbol.Id, startDateTime, arriveDateTime);
             price = null;
             if ((matchesPrice != null) && matchesPrice.Any())
                 return false;
-            if (order.Direction == Direction.Up)
+            if (openOrder.Direction == Direction.Up)
             {
                 price = matchesPrice.Max();
                 return true;
