@@ -7,10 +7,6 @@ namespace Orders.Games
     {
         private IList<GameType> _types;
 
-        public GameSet()
-        {
-
-        }
         public Symbol Symbol { get; set; }
 
         public IList<GameType> Types

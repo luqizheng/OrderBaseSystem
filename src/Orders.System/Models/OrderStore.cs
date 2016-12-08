@@ -8,7 +8,7 @@ namespace Order.System.Models
 {
     public class OrderStore:IOrderStore
     {
-        public void Save(Orders.Order order)
+        public void Insert(Orders.Order order)
         {
             throw new NotImplementedException();
         }

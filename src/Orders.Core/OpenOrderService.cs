@@ -10,6 +10,7 @@ namespace Orders
     public class OpenOrderService
     {
         private readonly OrderContext _orderContext;
+        private readonly QuotationContext _qutationContext;
         private readonly IOrderStore _orderStore;
 
         /// <summary>
@@ -17,16 +18,20 @@ namespace Orders
         /// <param name="orderContext"></param>
         /// <param name="qutationContext"></param>
         /// <param name="orderStore"></param>
-        public OpenOrderService(OrderContext orderContext, QuotationContext qutationContext, IOrderStore orderStore)
+        /// <param name="orderPolicyStore"></param>
+        /// <param name="pricePolicyStore"></param>
+        public OpenOrderService(OrderContext orderContext, QuotationContext qutationContext, IOrderStore orderStore,
+            IOrderPolicyStore orderPolicyStore, IPricePolicyStore pricePolicyStore)
         {
             if (orderContext == null) throw new ArgumentNullException(nameof(orderContext));
             _orderContext = orderContext;
+            _qutationContext = qutationContext;
             _orderStore = orderStore;
             OpenOrderPolicies = new List<IOrderPolicy>();
             OpenPricePolicies = new List<IOpenPricePolicy>();
 
 
-            DefaultOpenOpenPricePolicy = new RealTimeOpenOpenPricePolicy(qutationContext);
+            DefaultOpenOpenPricePolicy = new RealTimeOpenOpenPricePolicy();
         }
 
         /// <summary>
@@ -53,10 +58,11 @@ namespace Orders
                 if (!policy.IsPass(dto, _orderContext))
                     throw new OrderCreatingException(policy.Message);
 
-            var order = new Order(dto.Amount, dto.Direction) {User = user};
+            var order = new Order(dto.Amount, dto.Direction) { User = user };
             order.Confirm(GetOpenPrice(dto));
 
             _orderContext.UncloseOrders.Add(order);
+            _orderStore.Insert(order);
             return order;
         }
 
@@ -68,9 +74,9 @@ namespace Orders
         {
             Quotation openPrice;
             foreach (var policy in OpenPricePolicies)
-                if (policy.TryGetPrice(orderCreateDto, out openPrice))
+                if (policy.TryGetPrice(_qutationContext, orderCreateDto, out openPrice))
                     return openPrice;
-            if (DefaultOpenOpenPricePolicy.TryGetPrice(orderCreateDto, out openPrice))
+            if (DefaultOpenOpenPricePolicy.TryGetPrice(_qutationContext, orderCreateDto, out openPrice))
                 return openPrice;
             throw new OrderCreatingException(DefaultOpenOpenPricePolicy.Message);
         }

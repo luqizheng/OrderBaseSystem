@@ -2,9 +2,9 @@
 
 namespace Orders.Stores
 {
-    public class OrderQueueException : Exception
+    public class UncloseOrderQueueException : Exception
     {
-        public OrderQueueException(string message) : base(message)
+        public UncloseOrderQueueException(string message) : base(message)
         {
         }
     }

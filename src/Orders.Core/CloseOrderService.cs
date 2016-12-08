@@ -37,7 +37,7 @@ namespace Orders
                     if (polic.TryGetPrice(_qutationContext, order, out closePrice))
                     {
                         order.Close(closePrice);
-                        _store.Save(order);
+                        _store.Insert(order);
                         break;
                     }
                 }

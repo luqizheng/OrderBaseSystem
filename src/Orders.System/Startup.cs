@@ -17,7 +17,7 @@ namespace Order.System
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables();  
             Configuration = builder.Build();
         }
 
@@ -28,8 +28,12 @@ namespace Order.System
         {
             // Add framework services.
             services.AddMvc();
-            services.AddOrderService<OrderStore, SymbolManager>();
+            services
+                .AddOrderService()
+                .AddDbLiteStore();
             services.AddRedistQuotationService();
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

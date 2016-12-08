@@ -9,6 +9,6 @@ namespace Orders.Policy
         /// </summary>
         int Priority { get; }
         string Message { get; }
-        bool TryGetPrice(OrderCreateDto order, out Quotation price);
+        bool TryGetPrice(QuotationContext context,OrderCreateDto order, out Quotation price);
     }
 }

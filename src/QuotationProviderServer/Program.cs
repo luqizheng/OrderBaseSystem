@@ -23,8 +23,6 @@ namespace QuotationProviderServer
 
         private static void Provider_Received(object sender, Quotation e)
         {
-            
-            
             Console.WriteLine(e.Symbol.Name + ":" + e.Bid);
         }
     }

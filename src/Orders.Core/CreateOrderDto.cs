@@ -1,4 +1,5 @@
 ﻿using System;
+using Orders.Games;
 using Orders.Quotations;
 
 namespace Orders
@@ -30,5 +31,7 @@ namespace Orders
         ///     客户端提交时间。
         /// </summary>
         public DateTime ClientPostTime { get; set; }
+
+        public int GameTypeId { get; set; }
     }
 }

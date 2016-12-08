@@ -29,12 +29,12 @@ namespace Orders
         public virtual decimal WinRate { get; set; } = 0.5m;
 
         /// <summary>
-        /// 收到报价请求的时间。
+        ///     收到报价请求的时间。
         /// </summary>
         public virtual DateTime CreateTime { get; set; }
 
         /// <summary>
-        /// 确认报价的时间
+        ///     确认报价的时间
         /// </summary>
         public virtual DateTime? ConfirmDateTime { get; set; }
 
@@ -70,16 +70,18 @@ namespace Orders
         /// <summary>
         /// </summary>
         public virtual Symbol Symbol { get; set; }
+
         /// <summary>
-        /// 
         /// </summary>
         public Quotation OpenPrice { get; private set; }
+
+        //public DateTime? OpenTime { get; set; }
+
         /// <summary>
-        /// 
         /// </summary>
         public decimal? Profit { get; private set; }
+
         /// <summary>
-        /// 
         /// </summary>
         public Quotation ClosePrice { get; private set; }
 
@@ -92,6 +94,7 @@ namespace Orders
                 throw new ArgumentNullException(nameof(openPrice));
             ConfirmDateTime = DateTime.Now;
             OpenPrice = openPrice;
+          
             Status = OrderStatus.Opening;
         }
 
@@ -102,20 +105,14 @@ namespace Orders
             CompleteTime = DateTime.Now;
             ClosePrice = closePrice;
 
-            this.Status = OrderStatus.Completed;
+            Status = OrderStatus.Completed;
 
             if (closePrice == OpenPrice)
-            {
                 Profit = 0;
-            }
             else if (closePrice.Bid > OpenPrice.Bid)
-            {
-                Profit = Direction == Direction.Down ? -Amount : Amount * WinRate;
-            }
+                Profit = Direction == Direction.Down ? -Amount : Amount*WinRate;
             else
-            {
-                Profit = Direction == Direction.Up ? -Amount : Amount * WinRate;
-            }
+                Profit = Direction == Direction.Up ? -Amount : Amount*WinRate;
         }
     }
 }

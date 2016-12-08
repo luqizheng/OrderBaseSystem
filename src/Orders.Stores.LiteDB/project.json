@@ -1,12 +1,11 @@
-{
+﻿{
   "version": "1.0.0-*",
 
   "dependencies": {
+    "LiteDB": "3.0.0-beta2",
     "NETStandard.Library": "1.6.1",
-    "Ornament": "1.0.2",
-    "System.Linq": "4.3.0",
-    "System.Collections.Concurrent": "4.3.0",
-    "System.ComponentModel.Annotations": "4.3.0"
+    "Orders.Core": "1.0.0-*",
+    "Orders.Quotations": "1.0.0-*"
   },
 
   "frameworks": {

@@ -5,7 +5,9 @@ namespace Orders.Stores
 {
     public interface IOrderStore
     {
-        void Save(Order order);
+        void Insert(Order order);
+
+        void Update(Order order);
 
         Order GetLastOrder(string user, int symbol);
 

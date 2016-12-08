@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Orders.Collections
 {
-
     public class OrderCollection
     {
         private readonly IDictionary<string, Order> _pool = new ConcurrentDictionary<string, Order>();

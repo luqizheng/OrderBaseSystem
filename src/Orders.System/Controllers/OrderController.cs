@@ -1,14 +1,23 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Orders;
+using Orders.Quotations;
+using Orders.Stores;
 
 namespace Order.System.Controllers
 {
     [Route("api/[controller]")]
     public class OrderController : Controller
     {
-        public OrderController()
+        private readonly IOrderStore _orderStore;
+        private readonly QuotationContext _quotationContext;
+        private readonly OrderContext _orderContext;
+
+        public OrderController(IOrderStore orderStore,QuotationContext quotationContext,OrderContext orderContext)
         {
-            
+            _orderStore = orderStore;
+            _quotationContext = quotationContext;
+            _orderContext = orderContext;
         }
         // GET api/values
         [HttpGet]
@@ -26,8 +35,9 @@ namespace Order.System.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] OrderCreateDto value)
         {
+
         }
 
         // PUT api/values/5
