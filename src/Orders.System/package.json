@@ -1,0 +1,29 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "3.9.1",
+    "gulp-concat": "2.6.0",
+    "gulp-image-embed": "0.0.2",
+    "gulp-md5-plus-always": "^0.3.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.4",
+    "gulp-util": "^3.0.7",
+    "gulp-webpack": "1.5.0",
+    "html-loader": "^0.4.3",
+    "jshint": "^2.9.3",
+    "jshint-loader": "^0.8.3",
+    "jslint": "^0.10.3",
+    "less": "^2.7.1",
+    "ts-loader": "^0.8.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
