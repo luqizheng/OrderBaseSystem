@@ -2,7 +2,7 @@
 using Orders.Quotations;
 using Orders.Quotations.Stores;
 
-namespace QuotationProviderServer.Stores
+namespace Orders.System.Demo
 {
     public class SymbolStore : ISymbolStore
     {

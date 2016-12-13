@@ -4,6 +4,9 @@ using Orders.Quotations;
 
 namespace Orders
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Order
     {
         /// <summary>
@@ -92,10 +95,13 @@ namespace Orders
 
             ConfirmDateTime = DateTime.Now;
             OpenInfo.OpenPrice = openPrice;
-            CompleteTime = Game.GetCloseTime(openPrice.ArrivedTime);
+            CompleteTime = Game.GetCloseTime(openPrice.ArrivedTime.DateTime);
             Status = OrderStatus.Opening;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="closePrice"></param>
         public void Close(Quotation closePrice)
         {
             if (closePrice == null)
@@ -112,14 +118,18 @@ namespace Orders
             else
                 Profit = Direction == Direction.Up ? -Volume : Volume*Game.Rate;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public class OpenOrderInformation
         {
             public Quotation OpenPrice { get; set; }
 
             public DateTime? ClientPostTime { get; set; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public class CloseOrderInformation
         {
             public Quotation ClosePrice { get; internal set; }

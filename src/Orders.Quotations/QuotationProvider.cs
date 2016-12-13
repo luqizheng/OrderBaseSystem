@@ -10,6 +10,7 @@ namespace Orders.Quotations
         {
             _quotationContext = quotationContext;
         }
+
         public virtual void Dispose()
         {
         }

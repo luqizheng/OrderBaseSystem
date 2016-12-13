@@ -6,7 +6,12 @@ namespace Orders.Stores.LiteDB
 {
     public class GameStore : IGameStore
     {
-        public IEnumerable<GameSet> GetGameSets(int symbolId, string user)
+        public IEnumerable<Game> FindGames(int symbolId, string user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Game Get(int dtoGameTypeId)
         {
             throw new NotImplementedException();
         }

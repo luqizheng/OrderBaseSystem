@@ -14,7 +14,7 @@ namespace Orders.Quotations.RedisProvider
         private readonly ISymbolStore _store;
         private ConnectionMultiplexer _service;
         private IDictionary<string, Symbol> _symbolsMap;
-        private DateTime? _symbolUpdateTime;
+        private DateTime _symbolUpdateTime;
 
         public RedisQuotationProvider(QuotationContext context, ISymbolStore store, string server, int port,
             string authInfo,
@@ -38,17 +38,13 @@ namespace Orders.Quotations.RedisProvider
         {
             get
             {
-                if (_symbolUpdateTime == null || (DateTime.Now - _symbolUpdateTime.Value).TotalMinutes > 15)
+                if ((_symbolsMap == null) || ((DateTime.Now - _symbolUpdateTime).TotalMinutes > 15))
                 {
                     var dbData = _store.Symbols;
                     if (_symbolsMap == null)
-                    {
                         _symbolsMap = dbData.ToDictionary(s => s.Id.ToString(), s => s);
-                    }
                     else
-                    {
                         UpdateSymbol(dbData);
-                    }
                     _symbolUpdateTime = DateTime.Now;
                 }
 
@@ -63,12 +59,9 @@ namespace Orders.Quotations.RedisProvider
             lock (_symbolsMap)
             {
                 foreach (var dbsymbol in dbsymbols)
-                {
-                    //新增的添加。
                     if (!_symbolsMap.ContainsKey(dbsymbol.Id.ToString()))
                     {
                         _symbolsMap.Add(dbsymbol.Id.ToString(), dbsymbol);
-
                     }
                     else
                     {
@@ -77,18 +70,13 @@ namespace Orders.Quotations.RedisProvider
                         symbol.Code = dbsymbol.Code;
                         symbol.Scale = dbsymbol.Scale;
                     }
-                }
                 //不存在的删除。
                 foreach (var key in _symbolsMap.Keys)
-                {
                     if (!updatedList.ContainsKey(key))
-                    {
                         _symbolsMap.Remove(key);
-                    }
-                }
             }
-
         }
+
         public override void Start()
         {
             if (SymbolMap.Count == 0)
@@ -105,8 +93,9 @@ namespace Orders.Quotations.RedisProvider
                     if (!message.HasValue)
                         return;
                     var quotation = ToQuotation(message);
-                    if (quotation != null)
-                        OnReceived(quotation);
+                    quotation.Channel = channel;
+
+                    OnReceived(quotation);
                 });
             }
         }
@@ -123,7 +112,7 @@ namespace Orders.Quotations.RedisProvider
 
             var sclare = Convert.ToDecimal(Math.Pow(10, symbol.Scale));
 
-            var quotation = new Quotation(symbol, DateTimeOffset.Now.ToUnixTimeSeconds(), time)
+            var quotation = new Quotation(symbol, time)
             {
                 Bid = Convert.ToDecimal(quotationInfo[1]) / sclare,
                 Direction = (Direction)Enum.ToObject(typeof(Direction), Convert.ToInt32(quotationInfo[2]))

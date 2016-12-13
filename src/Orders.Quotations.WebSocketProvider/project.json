@@ -2,11 +2,9 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "LiteDB": "3.0.0-beta2",
     "NETStandard.Library": "1.6.1",
-    "Orders.Core": "1.0.0-*",
-    "Orders.Quotation.Stores.DBLite": "1.0.0-*",
-    "Orders.Quotations": "1.0.0-*"
+    "Orders.Quotations": "1.0.0-*",
+    "Ornament.WebSockets": "1.1.0"
   },
 
   "frameworks": {

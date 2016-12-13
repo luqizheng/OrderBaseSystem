@@ -32,6 +32,11 @@ namespace Orders.Quotations
             }, null, 1000, 1000);
         }
 
+        public void Dispose()
+        {
+            _timer.Dispose();
+        }
+
         public void Add(Quotation quotation)
         {
             if (quotation == null) throw new ArgumentNullException(nameof(quotation));
@@ -47,7 +52,7 @@ namespace Orders.Quotations
             {
                 queue = _list[quotation.Symbol.Id];
             }
-            var previous = this.Get(quotation.Symbol.Id);
+            var previous = Get(quotation.Symbol.Id);
             if (previous != null)
                 quotation.Direction = previous.Bid > quotation.Bid ? Direction.Down : Direction.Up;
             queue.Add(quotation);
@@ -66,12 +71,14 @@ namespace Orders.Quotations
             return null;
         }
 
+
         private void ClearExpire(QuotationQueue queue)
         {
             queue.Remove(ExpireSeconds);
         }
+
         /// <summary>
-        /// 获取报价，header是最新报价
+        ///     获取报价，header是最新报价
         /// </summary>
         /// <param name="symbolId"></param>
         /// <returns></returns>
@@ -84,7 +91,6 @@ namespace Orders.Quotations
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="symbolId"></param>
         /// <param name="startTime"></param>
@@ -102,35 +108,38 @@ namespace Orders.Quotations
             endTime = startTime.AddMilliseconds(999 - endTime.Millisecond);
 
             var quotation = from quote in GetList(symbolId)
-                            where quote.ArrivedTime >= startTime
-                                  && quote.ArrivedTime <= endTime
+                            where (quote.ArrivedTime >= startTime)
+                                  && (quote.ArrivedTime <= endTime)
                             select quote;
             return quotation.ToArray();
         }
 
-        public Quotation[] GetLastQuotation(int symbolId, DateTime beforeStartTime)
+        /// <summary>
+        /// 获取一秒内的报价。 
+        /// </summary>
+        /// <param name="symbolId"></param>
+        /// <param name="datetime">获取时间点</param>
+        /// <param name="datetimeInSeconds">是否精确到毫秒</param>
+        /// <returns></returns>
+        public Quotation[] GetQuotationsInSecond(int symbolId, DateTime datetime, bool datetimeInSeconds = true)
         {
-            var endTime = beforeStartTime.AddMilliseconds(999 - beforeStartTime.Millisecond);
-            var startTime = beforeStartTime;
+            var start = datetimeInSeconds ? new DateTime(datetime.Year, datetime.Month,
+                datetime.Day, datetime.Hour, datetime.Minute,
+                datetime.Second)
+                : datetime;
+            var end = start.AddSeconds(1);
             var list = new List<Quotation>();
-            foreach (var quote in GetList(symbolId))
-            {
-                if (quote.ArrivedTime >= startTime)
-                    continue;
-                if (quote.ArrivedTime <= endTime)
-                    break;
-                list.Add(quote);
 
+            foreach (var quotation in GetList(symbolId))
+            {
+                if (quotation.ArrivedTime > end)
+                    continue;
+                if ((quotation.ArrivedTime < start) && (list.Count > 0))
+                    break;
+                list.Add(quotation);
             }
-            //var quotation = from quote in GetList(symbolId)
-            //                where quote.ArrivedTime >= startTime
-            //                      && quote.ArrivedTime <= endTime
-            //                select quote;
+
             return list.ToArray();
-        }
-        public void Dispose()
-        {
-            _timer.Dispose();
         }
     }
 }

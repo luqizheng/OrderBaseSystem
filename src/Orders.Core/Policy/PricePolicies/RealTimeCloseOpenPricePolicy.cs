@@ -9,7 +9,7 @@ namespace Orders.Policy.PricePolicies
 
         public bool TryGetPrice(QuotationContext context, Order order, out Quotation price)
         {
-            var matchesPrice = context.GetLastQuotation(order.Game.Symbol.Id, order.CloseInfo.ExpireDateTime);
+            var matchesPrice = context.GetQuotationsInSecond(order.Game.Symbol.Id, order.CloseInfo.ExpireDateTime);
             price = null;
             if (matchesPrice.Any())
                 return false;

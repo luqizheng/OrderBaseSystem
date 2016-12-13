@@ -6,7 +6,7 @@ namespace Orders.Quotations
     {
         private decimal? _ask;
         private decimal _bid;
-        private DateTime? _provideTime;
+        private DateTimeOffset? _provideTime;
         private int _spread;
 
         protected Quotation()
@@ -16,51 +16,19 @@ namespace Orders.Quotations
         /// <summary>
         /// </summary>
         /// <param name="symbolModel"></param>
-        /// <param name="unixTimeTick">Unix Time Tick= local time</param>
-        /// <param name="quotationServerTimeTick">报价的报文所带的报价时间</param>
+        /// <param name="provierServerTickTime">Unix Time Tick= local time</param>
         public Quotation(Symbol symbolModel,
-            long unixTimeTick,
-            long quotationServerTimeTick
+            long provierServerTickTime
         )
         {
             Symbol = symbolModel;
             ArrivedTime = DateTime.Now;
-            UnixTimeTick = unixTimeTick;
-            QuotationServerTimeTick = quotationServerTimeTick;
+            ProviderTime = DateTimeOffset.FromUnixTimeSeconds(provierServerTickTime);
         }
-
-        public Quotation(Symbol symbolModel,
-            long unixTimeTick
-        )
-            : this(symbolModel, unixTimeTick, unixTimeTick)
-        {
-        }
-
         /// <summary>
-        ///     报价服务过来的Tick
+        /// 报价服务器的报价时间
         /// </summary>
-        public long UnixTimeTick { get; private set; }
-
-        /// <summary>
-        ///     报价的原始数据
-        /// </summary>
-        public long QuotationServerTimeTick { get; set; }
-
-        /// <summary>
-        ///     获取报价时间。已经转换为本地时间
-        /// </summary>
-        public DateTime ProviderTime
-        {
-            get
-            {
-                if (_provideTime == null)
-                {
-                    var offsetTime = DateTimeOffset.FromUnixTimeSeconds(QuotationServerTimeTick);
-                    _provideTime = offsetTime.DateTime;
-                }
-                return _provideTime.Value;
-            }
-        }
+        public DateTimeOffset ProviderTime { get; }
 
         /// <summary>
         ///     报价来源
@@ -83,7 +51,7 @@ namespace Orders.Quotations
         /// <summary>
         ///     报价到达时间
         /// </summary>
-        public DateTime ArrivedTime { get; private set; }
+        public DateTimeOffset ArrivedTime { get; }
 
         public Symbol Symbol { get; set; }
 
@@ -138,5 +106,20 @@ namespace Orders.Quotations
         ///     变动方向
         /// </summary>
         public Direction Direction { get; set; }
+
+        public string ToClient(bool useArrivedTime = false)
+        {
+            var bid = Convert.ToInt32(Bid*(int) Math.Pow(10, Symbol.Scale)).ToString();
+
+
+            var basicInfoPart = string.Format("{0},{1},{2}",
+                Symbol.Id,
+                bid,
+                (int) Direction
+            );
+
+            return string.Format("{0}|{1}",
+                useArrivedTime ? ArrivedTime.ToUnixTimeSeconds() : ProviderTime.ToUnixTimeSeconds(), basicInfoPart);
+        }
     }
 }

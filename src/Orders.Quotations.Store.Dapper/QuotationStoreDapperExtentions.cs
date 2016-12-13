@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Orders.Quotation.Stores.LiteDB;
 using Orders.Quotations.Stores;
 
-namespace Orders.Quotation
+namespace Orders.Quotations
 {
-    public static class OrdersQuotationExtents
+    public static class QuotationStoreDapperExtentions
     {
-        public static IServiceCollection AddQuotationLiteDbStore(this IServiceCollection services)
+        public static IServiceCollection AddQuotationDapperStore(this IServiceCollection services)
         {
             services.AddScoped(typeof(ISymbolStore), typeof(SymbolStore));
+            services.AddScoped(typeof(IChartInfoStore), typeof(ChartInfoStore));
             return services;
         }
     }

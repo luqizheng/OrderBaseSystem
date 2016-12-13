@@ -12,7 +12,7 @@ namespace Orders.Quotations
 
         public QuotationQueue(string symbol)
         {
-            if (symbol == null) throw new ArgumentNullException("symbol");
+            if (symbol == null) throw new ArgumentNullException(nameof(symbol));
             Symbol = symbol;
             _list = new ConcurrentQueue<Quotation>();
             _counters = new ConcurrentQueue<Counter>();
@@ -34,18 +34,18 @@ namespace Orders.Quotations
         public void Add(Quotation quotation)
         {
             if (quotation == null)
-                throw new ArgumentNullException("quotation");
+                throw new ArgumentNullException(nameof(quotation));
             _list.Enqueue(quotation);
             //计算次数
             foreach (var counter in _counters)
             {
-                if (counter.UnixTime == quotation.UnixTimeTick)
+                if (counter.ProviderTime == quotation.ProviderTime)
                 {
                     //如果相同,那么次数增加
                     counter.Set(quotation);
                     break;
                 }
-                if (counter.UnixTime > quotation.UnixTimeTick)
+                if (counter.ProviderTime > quotation.ProviderTime)
                 {
                     _counters.Enqueue(new Counter(quotation));
                     break;
@@ -58,7 +58,7 @@ namespace Orders.Quotations
             Quotation result;
             while (_list.TryPeek(out result))
             {
-                var remindSeconds = (DateTime.Now - result.ProviderTime).TotalSeconds;
+                var remindSeconds = (DateTimeOffset.Now - result.ProviderTime).TotalSeconds;
                 if (remindSeconds > expireSeconds)
                     _list.TryDequeue(out result);
                 else
@@ -74,7 +74,7 @@ namespace Orders.Quotations
             return null;
         }
 
-        public void Overview(int startTime, int endUnixTime,
+        public void Overview(DateTimeOffset startTime, DateTimeOffset endUnixTime,
             out int fenquence, out int amplitude)
         {
             decimal hight = 0;
@@ -85,10 +85,10 @@ namespace Orders.Quotations
             amplitude = 0;
             foreach (var counter in _counters)
             {
-                if (counter.UnixTime > endUnixTime)
+                if (counter.ProviderTime > endUnixTime)
                     continue;
 
-                if (counter.UnixTime < startTime)
+                if (counter.ProviderTime < startTime)
                     break;
                 digits = counter.Digits;
                 hight = Math.Max(counter.Hight, hight);
@@ -107,7 +107,7 @@ namespace Orders.Quotations
         {
             public Counter(Quotation quotation)
             {
-                UnixTime = quotation.UnixTimeTick;
+                ProviderTime = quotation.ProviderTime;
                 Count = 0;
                 Hight = quotation.Ask;
                 Low = quotation.Bid;
@@ -117,7 +117,7 @@ namespace Orders.Quotations
             public int Digits { get; private set; }
             public decimal Hight { get; private set; }
             public decimal Low { get; private set; }
-            public long UnixTime { get; private set; }
+            public DateTimeOffset ProviderTime { get; }
 
             public int Count { get; private set; }
 

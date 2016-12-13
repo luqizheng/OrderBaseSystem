@@ -30,7 +30,6 @@ namespace Orders
         {
             var orders = _orderContext.UncloseOrders.DequeueUncloseOrders(DateTime.Now);
             foreach (var order in orders)
-            {
                 foreach (var polic in CloseOrderPricePolicies)
                 {
                     Quotation closePrice;
@@ -38,11 +37,13 @@ namespace Orders
                     {
                         order.Close(closePrice);
                         _store.Insert(order);
+                        Closed?.Invoke(this, order);
                         break;
                     }
                 }
-            }
         }
+
+        public event EventHandler<Order> Closed;
 
         public void Start()
         {

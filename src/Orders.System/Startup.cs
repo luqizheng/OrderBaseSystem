@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Order.System.Models;
 using Orders;
+using Orders.Quotations;
+using Orders.Quotations.Publishers;
 using Orders.Quotations.RedisProvider;
+using Ornament.Uow;
+using Orders.System.Demo;
 
 namespace Order.System
 {
@@ -17,7 +20,7 @@ namespace Order.System
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
-                .AddEnvironmentVariables();  
+                .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -28,12 +31,15 @@ namespace Order.System
         {
             // Add framework services.
             services.AddMvc();
-            services
-                .AddOrderService()
-                .AddDbLiteStore();
-            services.AddRedistQuotationService();
+            services.AddOrderService() //添加订单系统
+                .AddQuotationDapperStore() //添加报价存储;
+                .AddRedistQuotation() //添加redis 报价服务程序
+                .AddQuotationWebSocket(); //添加推送的报价
 
-           
+            //services.AddDbUowForSqlServer(Configuration.GetConnectionString("Conn"), true);
+
+            //demo setting;
+            services.AddDemo();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,15 +47,34 @@ namespace Order.System
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
-            app.UseMvc();
-
-            app.ApplicationServices.UseRedistQuotationService(options =>
+            app.UseMvc(routes =>
             {
-                options.Password = "123456";
-                options.Server = "192.168.1.7";
-                options.Channel = "DA_QuotaChannel";
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //与业务相关的
+
+            app.UseWebSocketQuote(); //启动WeboSockeProver
+            //productor
+
+            //Redist 订阅报价是这个系统唯一的报价器
+            //app.ApplicationServices.UseRedistQuotationService(options =>
+            //{
+            //    options.Password = "123456";
+            //    options.Server = "192.168.1.7";
+            //    options.Channel = "DA_QuotaChannel";
+            //});
+
+            //demo
+            app.UseDemo();
+
+
+            app.ApplicationServices.UseCloseOrderService(); //启动平仓服务。
         }
     }
 }
