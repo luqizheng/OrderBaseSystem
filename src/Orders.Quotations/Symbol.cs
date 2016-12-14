@@ -16,7 +16,5 @@ namespace Orders.Quotations
 
         public IDictionary<DayOfWeek, IList<TimePeriod>> TradingSession
             => _tradingSession ?? (_tradingSession = new ConcurrentDictionary<DayOfWeek, IList<TimePeriod>>());
-
-
     }
 }

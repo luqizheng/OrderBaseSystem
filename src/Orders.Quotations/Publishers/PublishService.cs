@@ -13,7 +13,7 @@ namespace Orders.Quotations.Publishers
         public PublishService(QuotationProvider privider, IQuotationPublisher[] publisher)
         {
             if (privider == null) throw new ArgumentNullException(nameof(privider));
-            if (publisher == null || publisher.Length == 0) throw new ArgumentNullException(nameof(publisher));
+            if ((publisher == null) || (publisher.Length == 0)) throw new ArgumentNullException(nameof(publisher));
             _privider = privider;
             _publisher = publisher;
         }

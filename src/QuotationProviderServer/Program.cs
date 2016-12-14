@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Orders;
 using Orders.Quotations;
-using Orders.Quotations.RedisProvider;
+
 using QuotationProviderServer.Stores;
 
 namespace QuotationProviderServer

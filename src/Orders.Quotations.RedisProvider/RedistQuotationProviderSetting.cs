@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Orders.Quotations.Stores;
 
-namespace Orders.Quotations.RedisProvider
+namespace Orders.Quotations
 {
     public class RedistQuotationProviderSetting
     {

@@ -12,7 +12,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.Core", "Orders.Core\
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.System", "Orders.System\Orders.System.xproj", "{4F94B2BA-43AD-4809-A64B-9C8557928935}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.Quotations.RedisProvider", "Orders.Quotations.RedisProvider\Orders.Quotations.RedisProvider.xproj", "{8DE00F4D-BBDE-49CA-851A-7B0D863C429D}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.Quotations.Providers.Redis", "Orders.Quotations.RedisProvider\Orders.Quotations.Providers.Redis.xproj", "{8DE00F4D-BBDE-49CA-851A-7B0D863C429D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{47EEA4A0-F62F-412A-835A-557148CB0773}"
 EndProject

@@ -98,7 +98,7 @@ namespace Orders.Quotations
 
             if (digits != 0)
             {
-                var remind = (hight - low) * (decimal)Math.Pow(10, digits);
+                var remind = (hight - low)*(decimal) Math.Pow(10, digits);
                 amplitude = Convert.ToInt32(remind);
             }
         }

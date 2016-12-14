@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Orders.Quotations.Providers;
+using Orders.Quotations.Proviers;
 using Orders.Quotations.Stores;
 
-namespace Orders.Quotations.RedisProvider
+namespace Orders.Quotations
 {
     public static class RedisQuotationProviderExtentions
     {

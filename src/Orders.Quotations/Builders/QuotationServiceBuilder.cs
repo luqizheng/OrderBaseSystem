@@ -1,7 +1,4 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
-using Orders.Quotations.Providers;
-using Orders.Quotations.Publishers;
 
 // ReSharper disable once CheckNamespace
 
@@ -15,9 +12,9 @@ namespace Orders.Quotations
         }
 
         public IServiceCollection Services { get; }
+        ///// </summary>
 
         ///// <summary>
-        ///// </summary>
         //public bool HasProvider { get; private set; }
 
         //public bool HasPublisher { get; private set; }
@@ -39,7 +36,7 @@ namespace Orders.Quotations
         //public void AddPublisher<T>() where T : IQuotationPublisher
         //{
         //    Services.AddSingleton(typeof(IQuotationPublisher), typeof(T));
-          
+
         //}
 
         ///// <summary>

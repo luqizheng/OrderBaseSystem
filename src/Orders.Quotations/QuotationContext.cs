@@ -108,14 +108,14 @@ namespace Orders.Quotations
             endTime = startTime.AddMilliseconds(999 - endTime.Millisecond);
 
             var quotation = from quote in GetList(symbolId)
-                            where (quote.ArrivedTime >= startTime)
-                                  && (quote.ArrivedTime <= endTime)
-                            select quote;
+                where (quote.ArrivedTime >= startTime)
+                      && (quote.ArrivedTime <= endTime)
+                select quote;
             return quotation.ToArray();
         }
 
         /// <summary>
-        /// 获取一秒内的报价。 
+        ///     获取一秒内的报价。
         /// </summary>
         /// <param name="symbolId"></param>
         /// <param name="datetime">获取时间点</param>
@@ -123,9 +123,10 @@ namespace Orders.Quotations
         /// <returns></returns>
         public Quotation[] GetQuotationsInSecond(int symbolId, DateTime datetime, bool datetimeInSeconds = true)
         {
-            var start = datetimeInSeconds ? new DateTime(datetime.Year, datetime.Month,
-                datetime.Day, datetime.Hour, datetime.Minute,
-                datetime.Second)
+            var start = datetimeInSeconds
+                ? new DateTime(datetime.Year, datetime.Month,
+                    datetime.Day, datetime.Hour, datetime.Minute,
+                    datetime.Second)
                 : datetime;
             var end = start.AddSeconds(1);
             var list = new List<Quotation>();

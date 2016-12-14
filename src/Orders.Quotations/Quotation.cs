@@ -6,7 +6,7 @@ namespace Orders.Quotations
     {
         private decimal? _ask;
         private decimal _bid;
-        private DateTimeOffset? _provideTime;
+      
         private int _spread;
 
         protected Quotation()
@@ -25,8 +25,9 @@ namespace Orders.Quotations
             ArrivedTime = DateTime.Now;
             ProviderTime = DateTimeOffset.FromUnixTimeSeconds(provierServerTickTime);
         }
+
         /// <summary>
-        /// 报价服务器的报价时间
+        ///     报价服务器的报价时间
         /// </summary>
         public DateTimeOffset ProviderTime { get; }
 
