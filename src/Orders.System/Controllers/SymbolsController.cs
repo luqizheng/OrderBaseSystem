@@ -4,8 +4,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Quotations;
 using Orders.Quotations.Stores;
-using Ornament.Uow.DbConnection;
-using Ornament.Uow.Web;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,12 +28,12 @@ namespace Order.System.Controllers
         public IEnumerable<object> Get()
         {
             var result = from symbol in _symbolStore.Symbols
-                         let quote = _quotationContext.Get(symbol.Id)
-                         select new
-                         {
-                             price = quote?.Bid ?? 0m,
-                             symbol
-                         };
+                let quote = _quotationContext.Get(symbol.Id)
+                select new
+                {
+                    price = quote?.Bid ?? 0m,
+                    symbol
+                };
             return result;
         }
 

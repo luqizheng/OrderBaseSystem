@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orders;
 using Orders.Quotations;
-using Orders.Quotations.RedisProvider;
 using Orders.System.Demo;
 
 namespace Order.System

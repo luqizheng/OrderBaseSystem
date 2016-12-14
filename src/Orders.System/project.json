@@ -4,7 +4,6 @@
     "Orders.Core": "1.0.0-*",
     "Orders.Quotations": "1.0.0-*",
     "Orders.Stores.DbConnection": "1.0.0-*",
-    "Orders.Quotations.RedisProvider": "1.0.0-*",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
     "Microsoft.Extensions.Logging.Debug": "1.1.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
@@ -24,11 +23,12 @@
       "type": "platform"
     },
     "Ornament.WebSockets": "1.1.0",
-    "Orders.Quotations.Store.Dapper": "1.0.0-*",
     "Microsoft.AspNetCore.StaticFiles": "1.1.0",
     "Ornament.Uow.Web": "0.1.0",
     "Orders.System.Demo": "1.0.0-*",
-    "Orders.Quotations.Publishers.WebSocket": "1.0.0-*"
+    "Orders.Quotations.Publishers.WebSocket": "1.0.0-*",
+    "Orders.Quotations.Providers.Redis": "1.0.0-*",
+    "Orders.Quotations.Stores.Dapper": "1.0.0-*"
   },
 
   "tools": {

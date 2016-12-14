@@ -11,7 +11,7 @@
     },
     "Orders.Core": "1.0.0-*",
     "Orders.Quotations": "1.0.0-*",
-    "Orders.Quotations.RedisProvider": "1.0.0-*"
+    "Orders.Quotations.Providers.Redis": "1.0.0-*"
   },
 
   "frameworks": {
