@@ -18,7 +18,7 @@ namespace Order.System.Controllers
    
         // POST api/values
         [HttpPost]
-        public OrderCreatedResult Post([FromBody] OpenOrderInfo value)
+        public OrderCreatedResult Post(OpenOrderInfo value)
         {
             return _openOrderService.CreateOrder(value, "demo-user");
         }

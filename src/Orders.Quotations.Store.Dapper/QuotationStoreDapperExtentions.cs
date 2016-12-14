@@ -9,11 +9,12 @@ namespace Orders.Quotations
 {
     public static class QuotationStoreDapperExtentions
     {
-        public static IServiceCollection AddQuotationDapperStore(this IServiceCollection services)
+        public static QuotationServiceBuilder AddQuotationDapperStore(this QuotationServiceBuilder builder)
         {
+            var services = builder.Services;
             services.AddScoped(typeof(ISymbolStore), typeof(SymbolStore));
             services.AddScoped(typeof(IChartInfoStore), typeof(ChartInfoStore));
-            return services;
+            return builder;
         }
     }
 }

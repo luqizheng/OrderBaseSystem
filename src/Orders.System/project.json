@@ -19,18 +19,16 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
- 
-
     "Microsoft.NETCore.App": {
       "version": "1.1.0",
       "type": "platform"
     },
     "Ornament.WebSockets": "1.1.0",
     "Orders.Quotations.Store.Dapper": "1.0.0-*",
-    "Orders.Quotations.WebSocketProvider": "1.0.0-*",
     "Microsoft.AspNetCore.StaticFiles": "1.1.0",
     "Ornament.Uow.Web": "0.1.0",
-    "Orders.System.Demo": "1.0.0-*"
+    "Orders.System.Demo": "1.0.0-*",
+    "Orders.Quotations.Publishers.WebSocket": "1.0.0-*"
   },
 
   "tools": {

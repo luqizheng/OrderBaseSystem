@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Orders.Quotations;
 using Orders.Quotations.Stores;
 using Orders.Stores;
+using Orders.System.Demo.Stores;
 
 namespace Orders.System.Demo
 {
@@ -10,14 +11,11 @@ namespace Orders.System.Demo
     {
         public static void AddDemo(this IServiceCollection services)
         {
-            services.AddSingleton(typeof(ISymbolStore), typeof(SymbolStore));
-            services.AddSingleton(typeof(IOrderStore), typeof(OrderStore));
-            services.AddSingleton(typeof(QuotationProvider), typeof(DemoQuotationProvider));
+            services.AddSingleton(typeof(ISymbolStore), typeof(DemoSymbloStore));
+            services.AddSingleton(typeof(IOrderStore), typeof(DemoOrderStore));
+            services.AddSingleton(typeof(DemoQuotationProvider), typeof(DemoQuotationProvider));
         }
 
-        public static void UseDemo(this IApplicationBuilder service)
-        {
-            service.ApplicationServices.GetService<QuotationProvider>().Start();
-        }
+    
     }
 }

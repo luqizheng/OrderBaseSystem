@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Orders.Quotations;
 using Orders.Quotations.Stores;
 
-namespace Orders.System.Demo
+namespace Orders.Quotations.RedisProvider
 {
-    public class SymbolStore : ISymbolStore
+    public class RdsitSymbolStore : ISymbolStore
     {
         private readonly List<Symbol> symbols = new List<Symbol>
         {

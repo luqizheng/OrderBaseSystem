@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Orders.Stores;
 
-namespace Orders.System.Demo
+namespace Orders.System.Demo.Stores
 {
-    public class OrderStore : IOrderStore
+    public class DemoOrderStore : IOrderStore
     {
         public void Insert(Order order)
         {

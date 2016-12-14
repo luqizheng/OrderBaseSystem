@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Orders.Quotations.Providers;
 using Orders.Quotations.Stores;
 using StackExchange.Redis;
 
@@ -11,25 +12,27 @@ namespace Orders.Quotations.RedisProvider
     {
         private readonly string[] _channels;
         private readonly ConfigurationOptions _options;
+        private readonly RedistQuotationProviderSetting _setting;
         private readonly ISymbolStore _store;
+
         private ConnectionMultiplexer _service;
         private IDictionary<string, Symbol> _symbolsMap;
         private DateTime _symbolUpdateTime;
 
-        public RedisQuotationProvider(QuotationContext context, ISymbolStore store, string server, int port,
-            string authInfo,
-            params string[] channels) : base(context)
+        public RedisQuotationProvider(ISymbolStore store, RedistQuotationProviderSetting setting)
         {
+            if (store == null) throw new ArgumentNullException(nameof(store));
+            if (setting == null) throw new ArgumentNullException(nameof(setting));
             _store = store;
-            _channels = channels;
+            _setting = setting;
+            _channels = setting.Channel;
             _options = new ConfigurationOptions
             {
                 AllowAdmin = true,
-                //ServiceName = server + ":" + port,
-                Password = authInfo,
+                Password = setting.Password,
                 EndPoints =
                 {
-                    new DnsEndPoint(server, port)
+                    new DnsEndPoint(setting.Server, setting.Port)
                 }
             };
         }
@@ -51,6 +54,8 @@ namespace Orders.Quotations.RedisProvider
                 return _symbolsMap;
             }
         }
+
+        public bool Running { get; set; }
 
         private void UpdateSymbol(IEnumerable<Symbol> dbsymbols)
         {
@@ -79,6 +84,8 @@ namespace Orders.Quotations.RedisProvider
 
         public override void Start()
         {
+            if (Running)
+                return;
             if (SymbolMap.Count == 0)
                 throw new Exception("Symbol List 为空。");
 
@@ -86,18 +93,16 @@ namespace Orders.Quotations.RedisProvider
             _service = ConnectionMultiplexer.Connect(_options);
 
             foreach (var subChannel in _channels)
-            {
-                var sub = _service.GetSubscriber();
-                sub.Subscribe(subChannel, (channel, message) =>
-                {
-                    if (!message.HasValue)
-                        return;
-                    var quotation = ToQuotation(message);
-                    quotation.Channel = channel;
-
-                    OnReceived(quotation);
-                });
-            }
+                _service.GetSubscriber()
+                    .Subscribe(subChannel, (channel, message) =>
+                    {
+                        if (!message.HasValue)
+                            return;
+                        var quotation = ToQuotation(message);
+                        quotation.Channel = channel;
+                        OnReceived(quotation);
+                    });
+            Running = true;
         }
 
         private Quotation ToQuotation(string message)
@@ -127,6 +132,7 @@ namespace Orders.Quotations.RedisProvider
 
         public override void Stop()
         {
+            Running = false;
             _service?.Close();
         }
 

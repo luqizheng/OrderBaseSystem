@@ -26,8 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stores", "Stores", "{A0D24F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QuotationsProviders", "QuotationsProviders", "{11EA428B-F09E-4573-A7C0-0128B58D346B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.Quotations.Publishers.WebSocket", "Orders.Quotations.WebSocketProvider\Orders.Quotations.Publishers.WebSocket.xproj", "{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.Quotation.Store.Dapper", "Orders.Quotations.Store.Dapper\Orders.Quotation.Store.Dapper.xproj", "{B156A0A9-43D5-4AC4-B02E-EA7B459E4862}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.Stores.DbConnection", "Orders.Stores.DbConnection\Orders.Stores.DbConnection.xproj", "{A0828B33-3C3B-4E7C-BD1F-9D69327D632E}"
@@ -35,6 +33,8 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Order.Watcher", "Order.Watcher\Order.Watcher.xproj", "{48A5BFB7-C650-4850-8581-AD1A979281CF}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.System.Demo", "Orders.System.Demo\Orders.System.Demo.xproj", "{3E2D7B62-7F97-47AC-9DDB-E2BD230380D6}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Orders.Quotations.Publishers.WebSocket", "Orders.Quotations.Publishers.WebSocket\Orders.Quotations.Publishers.WebSocket.xproj", "{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,10 +66,6 @@ Global
 		{758C2238-7025-4118-8C9A-F15B82F2FD8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{758C2238-7025-4118-8C9A-F15B82F2FD8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{758C2238-7025-4118-8C9A-F15B82F2FD8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B156A0A9-43D5-4AC4-B02E-EA7B459E4862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B156A0A9-43D5-4AC4-B02E-EA7B459E4862}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B156A0A9-43D5-4AC4-B02E-EA7B459E4862}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -86,6 +82,10 @@ Global
 		{3E2D7B62-7F97-47AC-9DDB-E2BD230380D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E2D7B62-7F97-47AC-9DDB-E2BD230380D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E2D7B62-7F97-47AC-9DDB-E2BD230380D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,7 +94,7 @@ Global
 		{8DE00F4D-BBDE-49CA-851A-7B0D863C429D} = {11EA428B-F09E-4573-A7C0-0128B58D346B}
 		{87CC4725-0ED3-4E52-A338-8BB7C053E0E5} = {47EEA4A0-F62F-412A-835A-557148CB0773}
 		{758C2238-7025-4118-8C9A-F15B82F2FD8A} = {47EEA4A0-F62F-412A-835A-557148CB0773}
-		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06} = {11EA428B-F09E-4573-A7C0-0128B58D346B}
 		{B156A0A9-43D5-4AC4-B02E-EA7B459E4862} = {A0D24FB2-072B-4F92-8E1A-9178EDFD567D}
+		{DFD85FF2-CD68-48E0-A0E3-A1420B0AAF06} = {11EA428B-F09E-4573-A7C0-0128B58D346B}
 	EndGlobalSection
 EndGlobal

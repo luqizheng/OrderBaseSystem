@@ -1,16 +1,9 @@
 ﻿using System;
 
-namespace Orders.Quotations
+namespace Orders.Quotations.Providers
 {
     public abstract class QuotationProvider : IDisposable
     {
-        private readonly QuotationContext _quotationContext;
-
-        public QuotationProvider(QuotationContext quotationContext)
-        {
-            _quotationContext = quotationContext;
-        }
-
         public virtual void Dispose()
         {
         }
@@ -22,7 +15,6 @@ namespace Orders.Quotations
 
         public virtual void OnReceived(Quotation t)
         {
-            _quotationContext.Add(t);
             Received?.Invoke(this, t);
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Orders.Quotations;
+using Orders.Quotations.Providers;
 using Orders.Quotations.Stores;
 
 namespace Orders.System.Demo
@@ -10,11 +11,11 @@ namespace Orders.System.Demo
     public class DemoQuotationProvider : QuotationProvider
     {
         private readonly ISymbolStore _stores;
-        private readonly Random radom = new Random(DateTime.Now.Day);
+        private readonly Random _radom = new Random(DateTime.Now.Day);
         private readonly IDictionary<int, Symbol> symbols = new Dictionary<int, Symbol>();
         private Timer _timer;
 
-        public DemoQuotationProvider(ISymbolStore stores, QuotationContext context) : base(context)
+        public DemoQuotationProvider(ISymbolStore stores) 
         {
             _stores = stores;
             symbols = stores.Symbols.ToDictionary(s => s.Id, s => s);
@@ -28,14 +29,14 @@ namespace Orders.System.Demo
 
         private void Method(object state)
         {
-            var id = radom.Next(1, 20);
+            var id = _radom.Next(1, 20);
             if (symbols.ContainsKey(id))
             {
                 var symbol = symbols[id];
                 var quote = new Quotation(symbol,
                     DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                 {
-                    Bid = radom.Next(1000, 2000)
+                    Bid = _radom.Next(1000, 2000)
                 };
                 OnReceived(quote);
             }

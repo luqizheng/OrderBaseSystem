@@ -1,6 +1,6 @@
 ﻿/// <reference path="modules/services/symbolservice.js" />
 /// <reference path="modules/ctrl/symbolctrl.js" />
-
+var avalon = require('avalon');
 var symbolService = require("./modules/services/symbolservice.js");
 
 function init() {

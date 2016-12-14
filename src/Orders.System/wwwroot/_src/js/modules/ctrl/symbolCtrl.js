@@ -1,5 +1,6 @@
 ﻿/// <reference path="../services/quotationprovider.js" />
 /// <reference path="../services/symbolservice.js" />
+var avalon = require('avalon');
 function init(wsQuoteUrl) {
     var vm = avalon.define({
         $id: "symbolList",

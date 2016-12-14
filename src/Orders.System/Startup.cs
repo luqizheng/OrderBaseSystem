@@ -5,9 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orders;
 using Orders.Quotations;
-using Orders.Quotations.Publishers;
 using Orders.Quotations.RedisProvider;
-using Ornament.Uow;
 using Orders.System.Demo;
 
 namespace Order.System
@@ -24,6 +22,7 @@ namespace Order.System
             Configuration = builder.Build();
         }
 
+
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -31,10 +30,18 @@ namespace Order.System
         {
             // Add framework services.
             services.AddMvc();
-            services.AddOrderService() //添加订单系统
+            services.AddOrderService(); //添加订单系统
+
+
+            services.AddQuotation()
                 .AddQuotationDapperStore() //添加报价存储;
-                .AddRedistQuotation() //添加redis 报价服务程序
-                .AddQuotationWebSocket(); //添加推送的报价
+                .AddRedstiQuotationProvider(options =>
+                {
+                    options.Password = "123456";
+                    options.Server = "192.168.1.7";
+                    options.Channel = new[] { "DA_QuoteChannel" };
+                }) //添加redis 报价服务程序
+                .AddWebSocketPublisher(); //添加推送的报价
 
             //services.AddDbUowForSqlServer(Configuration.GetConnectionString("Conn"), true);
 
@@ -53,26 +60,18 @@ namespace Order.System
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
 
             //与业务相关的
+            //Redist 订阅
 
+
+            //DEMO
+
+            app.ApplicationServices.UseQuotation();
             app.UseWebSocketQuote(); //启动WeboSockeProver
-            //productor
-
-            //Redist 订阅报价是这个系统唯一的报价器
-            //app.ApplicationServices.UseRedistQuotationService(options =>
-            //{
-            //    options.Password = "123456";
-            //    options.Server = "192.168.1.7";
-            //    options.Channel = "DA_QuotaChannel";
-            //});
-
-            //demo
-            app.UseDemo();
-
 
             app.ApplicationServices.UseCloseOrderService(); //启动平仓服务。
         }
