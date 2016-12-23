@@ -15,7 +15,7 @@ namespace Orders.System.Demo
         private readonly IDictionary<int, Symbol> symbols = new Dictionary<int, Symbol>();
         private Timer _timer;
 
-        public DemoQuotationProvider(ISymbolStore stores) 
+        public DemoQuotationProvider(ISymbolStore stores)
         {
             _stores = stores;
             symbols = stores.Symbols.ToDictionary(s => s.Id, s => s);
@@ -29,16 +29,19 @@ namespace Orders.System.Demo
 
         private void Method(object state)
         {
-            var id = _radom.Next(1, 20);
-            if (symbols.ContainsKey(id))
+            for (int i = 0; i < 10; i++)
             {
-                var symbol = symbols[id];
-                var quote = new Quotation(symbol,
-                    DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+                var id = _radom.Next(1, 20);
+                if (symbols.ContainsKey(id))
                 {
-                    Bid = _radom.Next(1000, 2000)
-                };
-                OnReceived(quote);
+                    var symbol = symbols[id];
+                    var quote = new Quotation(symbol,
+                        DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+                    {
+                        Bid = _radom.Next(1000, 2000)
+                    };
+                    OnReceived(quote);
+                }
             }
         }
 

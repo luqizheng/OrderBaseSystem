@@ -30,7 +30,9 @@ namespace Order.System.Controllers
                 throw new OrderCreatingException("找不到品种.");
             var creatingInfo = new OpenOrderInfo
             {
-                ClientPostTime = DateTimeOffset.FromUnixTimeMilliseconds(value.ClientTime).DateTime,
+                ClientPostTime = value.ClientTime != null
+                ? DateTimeOffset.FromUnixTimeMilliseconds(value.ClientTime.Value).DateTime
+                : (DateTime?)null,
                 Direction = value.Direction,
                 Volume = value.Volume
             };

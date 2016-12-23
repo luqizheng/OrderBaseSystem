@@ -88,7 +88,7 @@ namespace Orders.Quotations
                 return queue;
             return null;
         }
-
+       
         /// <summary>
         ///     获取某个报价时间的唯一报价.这个是精确报价。
         /// </summary>

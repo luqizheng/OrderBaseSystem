@@ -116,7 +116,7 @@ namespace Order.System
             //报价相关
             app.ApplicationServices.UseQuotation();
             app.UseWebSocketQuote(); //启动WeboSockeProver
-
+            app.UseWebSocketQuotationStaus();
             //Order相关
             app.ApplicationServices.UseOrderService(); //启动平仓服务。
             app.UseWebSocketForOrderNotify("/notify/order", http => false); //启动OrderNotify,

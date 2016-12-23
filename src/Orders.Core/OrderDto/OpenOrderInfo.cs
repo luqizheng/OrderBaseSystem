@@ -27,13 +27,16 @@ namespace Orders
         /// <summary>
         ///     客户端millsisonds
         /// </summary>
-        public DateTime ClientPostTime { get; set; }
+        public DateTime? ClientPostTime { get; set; }
 
         public double RemindSeconds
         {
-            get { return (this.ArriveDateTime - ClientPostTime).TotalSeconds; }
+            get
+            {
+                if (ClientPostTime == null)
+                    return 0;
+                return (this.ArriveDateTime - ClientPostTime.Value).TotalSeconds;
+            }
         }
-
-
     }
 }

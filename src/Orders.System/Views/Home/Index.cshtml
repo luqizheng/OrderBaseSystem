@@ -19,21 +19,27 @@ scripts{
     </div>
 </div>
 <div class="container-fluid">
-    <div id="symbolList" :controller="symbolList" class="col-md-2">
+    <div id="symbolList" :controller="symbolList" class="col-md-3">
 
         <ul>
             <li :for="(id,el) in @@symbols">
-                {{@@el.active}}
+               
                 <a href="javascript:;" :class="el.active?'symbol-active':''" :click="active(el)">
                     {{el.info.name}}
-                </a> {{el.price}}
+                </a>
+                当前价格:{{el.price}}
+
+                幅度：{{el.amp}}
+
+                频率:{{el.seq}}
+
             </li>
         </ul>
 
     </div>
 
 
-    <div id="main" class="col-md-8">
+    <div id="main" class="col-md-7">
 
     </div>
 

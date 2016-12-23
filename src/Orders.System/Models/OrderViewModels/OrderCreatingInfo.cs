@@ -14,7 +14,7 @@ namespace Order.System.Models.OrderViewModels
         /// <summary>
         ///     客户端提交时间。
         /// </summary>
-        public long ClientTime { get; set; }
+        public long? ClientTime { get; set; }
 
         [Required]
         /// <summary>

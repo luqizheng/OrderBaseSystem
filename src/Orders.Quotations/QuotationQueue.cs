@@ -21,6 +21,22 @@ namespace Orders.Quotations
             _counters = new ConcurrentQueue<QuotationCounter>();
         }
 
+        public Quotation CurrentQuotation
+        {
+            get
+            {
+                _lastQuotationLockSlim.EnterReadLock();
+                try
+                {
+                    return _lastQuotation;
+                }
+                finally
+                {
+                    _lastQuotationLockSlim.ExitReadLock();
+                }
+            }
+        }
+
         public IEnumerator<Quotation> GetEnumerator()
         {
             return _list.GetEnumerator();
@@ -43,9 +59,7 @@ namespace Orders.Quotations
             if (datetime < miniTime)
                 return null;
             if (datetime > maxTime)
-            {
                 return CurrentQuotation;
-            }
             Quotation result = null;
             foreach (var quotation in _list.Reverse())
             {
@@ -73,21 +87,15 @@ namespace Orders.Quotations
             _lastQuotation = quotation;
             _lastQuotationLockSlim.ExitWriteLock();
 
-            //计算次数
-            foreach (var counter in _counters)
-            {
+            var counter = _counters.LastOrDefault();
+            if (counter != null)
                 if (counter.ProviderTime == quotation.ProviderTime)
                 {
                     //如果相同,那么次数增加
                     counter.Set(quotation);
-                    break;
+                    return;
                 }
-                if (counter.ProviderTime > quotation.ProviderTime)
-                {
-                    _counters.Enqueue(new QuotationCounter(quotation));
-                    break;
-                }
-            }
+            _counters.Enqueue(new QuotationCounter(quotation));
         }
 
 
@@ -130,22 +138,23 @@ namespace Orders.Quotations
                 else
                     break;
             }
-        }
-        public Quotation CurrentQuotation
-        {
-            get
+            QuotationCounter counter;
+            while (_counters.TryPeek(out counter))
             {
-                _lastQuotationLockSlim.EnterReadLock();
-                try
-                {
-                    return _lastQuotation;
-                }
-                finally
-                {
-                    _lastQuotationLockSlim.ExitReadLock();
-                }
+                var remindSeconds = (DateTimeOffset.Now - counter.ProviderTime).TotalSeconds;
+                if (remindSeconds > expireSeconds)
+                    _counters.TryDequeue(out counter);
+                else
+                    break;
             }
         }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endUnixTime"></param>
+        /// <param name="fenquence">报价频率</param>
+        /// <param name="amplitude">幅度</param>
         public void Overview(DateTimeOffset startTime, DateTimeOffset endUnixTime,
             out int fenquence, out int amplitude)
         {
@@ -157,22 +166,20 @@ namespace Orders.Quotations
             amplitude = 0;
             foreach (var counter in _counters)
             {
-                if (counter.ProviderTime > endUnixTime)
+                if ((counter.ProviderTime > endUnixTime) || (counter.ProviderTime < startTime))
                     continue;
-
-                if (counter.ProviderTime < startTime)
-                    break;
                 digits = counter.Digits;
                 hight = Math.Max(counter.Hight, hight);
                 low = Math.Min(counter.Low, low);
                 fenquence += counter.Count;
             }
-
+            var remind = hight - low;
             if (digits != 0)
             {
-                var remind = (hight - low) * (decimal)Math.Pow(10, digits);
-                amplitude = Convert.ToInt32(remind);
+                remind = remind * (decimal)Math.Pow(10, digits);
             }
+            amplitude = Convert.ToInt32(remind);
         }
     }
+
 }

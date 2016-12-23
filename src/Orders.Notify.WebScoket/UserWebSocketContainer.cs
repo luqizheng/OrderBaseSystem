@@ -53,7 +53,7 @@ namespace Orders.Notify
             {
                 var s = JsonConvert.SerializeObject(objOfNotify);
                 foreach (var socketId in userSocketCollection.GetSockets())
-                    manager.Get(socketId).SendTextAsnyc(s);
+                    manager.GetWebSocket(socketId).SendTextAsnyc(s);
             }
         }
     }

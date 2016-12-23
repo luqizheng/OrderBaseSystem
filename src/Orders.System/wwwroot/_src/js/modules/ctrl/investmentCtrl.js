@@ -1,6 +1,6 @@
 ﻿/// <reference path="../services/orderservice.js" />
 var avalon = require('avalon');
-var orderService = require('../services/orderservice.js');
+var orderService = require('../services/orderService.js');
 function init() {
     var vm = avalon.define({
         $id: "investmentCtrl",
@@ -29,9 +29,10 @@ function init() {
 
         var postData = vm.openOrderInfo.$model;
         postData.direction = upOrDown;
-        postData.clientTime = (new Date()).time;
-        debugger;
         orderService.buy(postData)
+            .done(function (d) {
+                alert(JSON.stringify(d));
+            })
         .error(buyError);
     }
     function buyError(e) {

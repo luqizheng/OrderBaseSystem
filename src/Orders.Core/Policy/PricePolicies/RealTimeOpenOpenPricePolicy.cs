@@ -22,7 +22,7 @@ namespace Orders.Policy.PricePolicies
         {
             if (game.Symbol == null)
                 throw new ArgumentNullException(nameof(game), "game.Synbol should not be null.");
-            var startDateTime = openOrder.ClientPostTime; //客户端提交时间。
+            var startDateTime = openOrder.ClientPostTime ?? openOrder.ArriveDateTime; //客户端提交时间。
 
 
             return context.TryGetQuotation(game.Symbol.Id, startDateTime, out price);

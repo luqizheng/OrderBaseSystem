@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Threading;
 using Ornament.WebSockets;
+using Ornament.WebSockets.Handlers;
 
 namespace Orders.Quotations.Publishers
 {
     public class WebSocketPublisher : IQuotationPublisher
     {
-        private readonly WebSocketManager _manager;
+        public WebSocketHandler Handler { get; set; }
 
-        public WebSocketPublisher(WebSocketManager manager)
+        public WebSocketPublisher()
         {
-            if (manager == null) throw new ArgumentNullException(nameof(manager));
-            _manager = manager;
         }
-
+        
         public void Publish(Quotation quotation)
         {
             if (quotation == null) throw new ArgumentNullException(nameof(quotation));
-            var clients = _manager.GetClients();
-            var content = quotation.ToClient(false);
-            clients.SendTextAsnyc(content, CancellationToken.None);
+            if (Handler != null)
+            {
+                var clients = Handler.GetClients();
+                var content = quotation.ToClient(false);
+                clients.SendTextAsnyc(content, CancellationToken.None);
+            }
         }
     }
 }

@@ -12,7 +12,9 @@ namespace Orders.Quotations
         {
             var services = builder.Services;
 
-            services.AddSingleton(typeof(IQuotationPublisher), typeof(WebSocketPublisher));
+            services.AddSingleton(typeof(IQuotationPublisher), ps => ps.GetService<WebSocketPublisher>());
+            services.AddSingleton(typeof(WebSocketPublisher));
+            services.AddSingleton(typeof(QuotationStatusPublisher));
             return builder;
         }
 
@@ -20,7 +22,25 @@ namespace Orders.Quotations
             string url = "/quote")
 
         {
-            app.UseOrnamentWebSocket(setting => { setting.AddText(url); });
+            app.UseOrnamentWebSocket(setting =>
+            {
+                var handler = setting.AddText(url);
+                var websocket = app.ApplicationServices.GetService<WebSocketPublisher>();
+                websocket.Handler = handler;
+            });
+            return app;
+        }
+
+        public static IApplicationBuilder UseWebSocketQuotationStaus(this IApplicationBuilder app,
+            string url = "/quote/status")
+
+        {
+            app.UseOrnamentWebSocket(setting =>
+            {
+                var handler = setting.AddText(url);
+                var websocket = app.ApplicationServices.GetService<QuotationStatusPublisher>();
+                websocket.Handler = handler;
+            });
             return app;
         }
     }

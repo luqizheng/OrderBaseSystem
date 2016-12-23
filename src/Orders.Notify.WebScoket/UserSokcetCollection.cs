@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Orders.Notify
@@ -8,7 +9,7 @@ namespace Orders.Notify
         private readonly Dictionary<string, IList<string>> accountWebSocketIdMapping =
             new Dictionary<string, IList<string>>();
 
-        private readonly Dictionary<string, string> socketIdUserMapping = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _socketIdUserMapping = new Dictionary<string, string>();
 
         public void Add(string account, string websocketId)
         {
@@ -20,14 +21,15 @@ namespace Orders.Notify
                 else
                     webSocketIdList = accountWebSocketIdMapping[account];
                 webSocketIdList.Add(websocketId);
-                socketIdUserMapping.Add(websocketId, account);
+                _socketIdUserMapping.Add(websocketId, account);
             }
         }
 
         public void Remove(string websocketId)
         {
-            var user = socketIdUserMapping[websocketId];
-            socketIdUserMapping.Remove(websocketId);
+            if (websocketId == null) throw new ArgumentNullException(nameof(websocketId));
+            var user = _socketIdUserMapping[websocketId];
+            _socketIdUserMapping.Remove(websocketId);
             accountWebSocketIdMapping[user].Remove(websocketId);
         }
 
@@ -40,7 +42,7 @@ namespace Orders.Notify
 
         public IEnumerable<string> GetSockets()
         {
-            return socketIdUserMapping.Keys.ToArray();
+            return _socketIdUserMapping.Keys.ToArray();
         }
     }
 }
