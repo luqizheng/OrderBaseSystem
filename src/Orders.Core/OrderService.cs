@@ -64,7 +64,7 @@ namespace Orders
         /// <param name="game"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public OrderCreatedResult CreateOrder(OpenOrderInfo dto, Game game, string user)
+        public Order CreateOrder(OpenOrderInfo dto, Game game, string user)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
             if (game == null) throw new ArgumentNullException(nameof(game));
@@ -83,12 +83,7 @@ namespace Orders
                 _orderStore.Insert(order);
 
                 _notify.OnCreated(order);
-                return new OrderCreatedResult
-                {
-                    Id = order.Id,
-                    OpenPrice = order.OpenInfo.OpenPrice.Bid,
-                    ExpireDateTime = order.CloseTime
-                };
+                return order;
             }
             catch (Exception ex)
             {

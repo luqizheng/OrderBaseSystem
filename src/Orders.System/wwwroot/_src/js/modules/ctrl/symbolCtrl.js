@@ -4,10 +4,14 @@
 var avalon = require('avalon');
 
 var ReduxActionDefined = require("./reduxAction.js");
+var SymbolListCtrl;
+var GlobalStore;
+var quotationProvider=null;
+function Init(url,globalStore) {
+ 
+   GlobalStore=globalStore;
 
-function Init(wsQuoteUrl, globalStore) {
-
-    var vm = avalon.define({
+   var vm=SymbolListCtrl = avalon.define({
         $id: "symbolList",
         symbols: {},
         activeId: 0,
@@ -16,7 +20,7 @@ function Init(wsQuoteUrl, globalStore) {
                 vm.symbols[vm.activeId].active = false;
             symbol.active = true;
             vm.activeId = symbol.info.id;
-            globalStore.dispatch(ReduxActionDefined.getChangeSymbol(symbol));
+            GlobalStore.dispatch(ReduxActionDefined.getChangeSymbol(symbol));
         }
 
     });
@@ -24,7 +28,6 @@ function Init(wsQuoteUrl, globalStore) {
     var services = require("../services/symbolservice");
     services.list()
         .done(function (data) {
-
             var symbols = {};
             var defSymBolId = false;
             for (var i = 0; i < data.length; i++) {
@@ -36,24 +39,24 @@ function Init(wsQuoteUrl, globalStore) {
                     defSymBolId = data[i].info.id;
             }
             vm.symbols = symbols;
-            vm.activeId = defSymBolId;
-
-            InitQuotationProvider(vm, wsQuoteUrl);
+            vm.activeId = defSymBolId;          
             vm.active(vm.symbols[defSymBolId]);
-
         });
-
-
+   var QuotationProvider = require('../services/quotationProvider.js');
+   quotationProvider=new QuotationProvider(url);
+   quotationProvider.onQuotation=function(quotation){
+       vm.symbols[quotation.id].price=quotation.bid;
+   }
 }
 
-function InitQuotationProvider(vm, wsQuoteUrl) {
-    var quotationProvider = require('../services/quotationProvider.js');
-    quotationProvider.init(wsQuoteUrl, vm.symbols);
 
-    var quotationStatus = require("../services/quotationstatusprovider.js");
-    quotationStatus.init("ws://localhost:5000/quote/status", vm.symbols);
-}
 
 module.exports = {
-    CreateCtrl: Init
+    CreateCtrl: Init,
+    StartQuotationProvider:function(){
+        quotationProvider.connect();
+    },
+    StopQuotationProvidder:function(){
+        quotationProvider.disconnect();
+    }
 }

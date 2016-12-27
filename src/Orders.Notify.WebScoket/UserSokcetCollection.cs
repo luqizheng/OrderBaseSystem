@@ -6,20 +6,20 @@ namespace Orders.Notify
 {
     public class UserSokcetCollection
     {
-        private readonly Dictionary<string, IList<string>> accountWebSocketIdMapping =
+        private readonly Dictionary<string, IList<string>> _accountWebSocketIdMapping =
             new Dictionary<string, IList<string>>();
 
         private readonly Dictionary<string, string> _socketIdUserMapping = new Dictionary<string, string>();
 
         public void Add(string account, string websocketId)
         {
-            lock (accountWebSocketIdMapping)
+            lock (_accountWebSocketIdMapping)
             {
                 IList<string> webSocketIdList;
-                if (!accountWebSocketIdMapping.ContainsKey(account))
-                    accountWebSocketIdMapping.Add(account, webSocketIdList = new List<string>());
+                if (!_accountWebSocketIdMapping.ContainsKey(account))
+                    _accountWebSocketIdMapping.Add(account, webSocketIdList = new List<string>());
                 else
-                    webSocketIdList = accountWebSocketIdMapping[account];
+                    webSocketIdList = _accountWebSocketIdMapping[account];
                 webSocketIdList.Add(websocketId);
                 _socketIdUserMapping.Add(websocketId, account);
             }
@@ -30,13 +30,13 @@ namespace Orders.Notify
             if (websocketId == null) throw new ArgumentNullException(nameof(websocketId));
             var user = _socketIdUserMapping[websocketId];
             _socketIdUserMapping.Remove(websocketId);
-            accountWebSocketIdMapping[user].Remove(websocketId);
+            _accountWebSocketIdMapping[user].Remove(websocketId);
         }
 
         public string[] GetWeboSocketId(string user)
         {
-            return accountWebSocketIdMapping.ContainsKey(user)
-                ? accountWebSocketIdMapping[user].ToArray()
+            return _accountWebSocketIdMapping.ContainsKey(user)
+                ? _accountWebSocketIdMapping[user].ToArray()
                 : new string[0];
         }
 

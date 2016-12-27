@@ -17,11 +17,9 @@ function init() {
 
         },
         up: function () {
-            console.log("up")
             but(0);
         },
         down: function () {
-            console.log("down");
             but(1);
         }
     });
@@ -33,11 +31,12 @@ function init() {
             .done(function (d) {
                 alert(JSON.stringify(d));
             })
-        .error(buyError);
+        .error(function (http) {
+            var result = JSON.parse(http.responseText);
+            alert(result.message);
+        });
     }
-    function buyError(e) {
-        alert(e.responseText);
-    }
+
     return vm;
 }
 
@@ -49,6 +48,6 @@ module.exports = {
             setSymbol: function (symbol) {
                 vm.symbol = symbol;
             }
-        }
+        };
     }
-}
+};

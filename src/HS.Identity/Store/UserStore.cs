@@ -33,7 +33,9 @@ namespace HS.Identity.Store
 
         public Task<IList<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            IList<Claim> result = new List<Claim>();
+
+            return Task.FromResult(result);
         }
 
         public Task AddClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
@@ -58,12 +60,13 @@ namespace HS.Identity.Store
 
         public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            user.Email = email;
+            return Task.FromResult(0);
         }
 
         public Task<string> GetEmailAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(user.Email);
         }
 
         public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
@@ -93,7 +96,7 @@ namespace HS.Identity.Store
 
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult((DateTimeOffset?) null);
+            return Task.FromResult((DateTimeOffset?)null);
         }
 
         public Task SetLockoutEndDateAsync(User user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
@@ -108,12 +111,12 @@ namespace HS.Identity.Store
 
         public Task ResetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(0);
         }
 
         public Task<int> GetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(1);
         }
 
         public Task<bool> GetLockoutEnabledAsync(User user, CancellationToken cancellationToken)
@@ -144,7 +147,7 @@ namespace HS.Identity.Store
 
         public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.Name);
+            return Task.FromResult(user.LoginId);
         }
 
         public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
@@ -175,7 +178,13 @@ namespace HS.Identity.Store
 
         public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = new User
+            {
+                Id = 1,
+                LoginId = normalizedUserName,
+                Name = normalizedUserName
+            };
+            return Task.FromResult(user);
         }
 
         public Task AddLoginAsync(User user, UserLoginInfo login, CancellationToken cancellationToken)
@@ -246,7 +255,12 @@ namespace HS.Identity.Store
 
         public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            IList<string> result = new List<string>();
+            if (user.LoginId == "111222")
+            {
+                result.Add("admin");
+            }
+            return Task.FromResult(result);
         }
 
         public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
@@ -266,7 +280,10 @@ namespace HS.Identity.Store
 
         public Task<string> GetSecurityStampAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+
+
+            //获取用户的安全戳
+            return Task.FromResult(user.LoginId);
         }
 
         public override void Update(User t)

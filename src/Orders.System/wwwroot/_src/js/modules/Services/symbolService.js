@@ -5,4 +5,4 @@ module.exports = {
     list: function () {
         return webApi.Get();
     }
-}
+};

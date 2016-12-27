@@ -1,41 +1,81 @@
 ﻿using System;
-using Ornament.WebSockets;
 
 namespace Orders.Notify.WebSockets
 {
     public class WebSocketOrderNotify : IOrderNotify
     {
         internal const string AdminGroup = "admin";
-        private readonly UserWebSocketContainer _containter;
-        private readonly WebSocketManager _manager;
 
-        public WebSocketOrderNotify(WebSocketManager manager, UserWebSocketContainer containter)
+        internal const string DefaultGroup = "default";
+
+        private readonly UserWebSocketContainer _containter;
+
+
+        public WebSocketOrderNotify(UserWebSocketContainer containter)
         {
-            if (manager == null) throw new ArgumentNullException(nameof(manager));
-            if (containter == null) throw new ArgumentNullException(nameof(containter));
-            _manager = manager;
+            if (containter == null)
+                throw new ArgumentNullException(nameof(containter));
+
             _containter = containter;
         }
 
         public void OnCreated(Order order)
         {
-            if (order == null) throw new ArgumentNullException(nameof(order));
-            _containter.SendTo(AdminGroup, order, _manager);
+            if (order == null)
+                throw new ArgumentNullException(nameof(order));
+
+            _containter.SendTo(AdminGroup, new
+            {
+                @event = "Open",
+                order = order,
+            });
+
+            _containter.SendTo(AdminGroup, new
+            {
+                @event = "Open",
+                order = new
+                {
+                    order.Id,
+                    openPrice = order.OpenInfo.OpenPrice,
+                    opennTime = order.OpenInfo.OpenPrice.ArrivedTime
+                },
+            });
         }
 
         public void OnCreating(OpenOrderInfo openOrderInfo)
         {
-            _containter.SendTo(AdminGroup, openOrderInfo, _manager);
+            //if (openOrderInfo == null)
+            //    throw new ArgumentNullException(nameof(openOrderInfo));
+
+            //_containter.SendTo(AdminGroup, openOrderInfo);
         }
 
         public void OnClosing(Order order)
         {
-            _containter.SendTo(AdminGroup, order, _manager);
+            //if (order == null)
+            //    throw new ArgumentNullException(nameof(order));
+            //_containter.SendTo(AdminGroup, order);
         }
 
         public void OnClosed(Order order)
         {
-            _containter.SendTo(AdminGroup, order, _manager);
+            if (order == null) throw new ArgumentNullException(nameof(order));
+            _containter.SendTo(AdminGroup,
+                new
+                {
+                    @event = "Close",
+                    order = AdminGroup
+                });
+
+            _containter.SendTo(DefaultGroup, new
+            {
+                @event = "Close",
+                order = new
+                {
+                    order.Profit,
+                    order.Id
+                }
+            });
         }
     }
 }

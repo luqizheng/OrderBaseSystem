@@ -58,11 +58,11 @@ function WepApi(url) {
 
         return a;
     };
-};
+}
 
 
 module.exports = {
     create: function (url) {
         return new WepApi(url);
     }
-}
+};

@@ -29,7 +29,7 @@ namespace Orders.System.Demo
 
         private void Method(object state)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 2; i++)
             {
                 var id = _radom.Next(1, 20);
                 if (symbols.ContainsKey(id))

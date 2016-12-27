@@ -21,8 +21,14 @@ namespace Orders.Notify
             return builder;
         }
 
-        public static IApplicationBuilder UseWebSocketForOrderNotify(this IApplicationBuilder app, string url,
-            Func<HttpContext, bool> funcIsAdmin)
+        /// <summary>
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="url"></param>
+        /// <param name="funcIsAdmin"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseWebSocketForOrderNotify(this IApplicationBuilder app,
+            Func<HttpContext, bool> funcIsAdmin, string url = "notify/order")
         {
             app.UseOrnamentWebSocket(setting =>
             {
@@ -31,36 +37,17 @@ namespace Orders.Notify
                 {
                     var isAdmin = funcIsAdmin(http);
                     app.ApplicationServices.GetService<UserWebSocketContainer>()
-                        .Add(http.User.Identity.Name, socket.Id,
-                            isAdmin ? WebSocketOrderNotify.AdminGroup : "default");
+                        .Add(socket,
+                        isAdmin ? WebSocketOrderNotify.AdminGroup : WebSocketOrderNotify.DefaultGroup);
                 };
 
                 handler.OnClosed = (socket, http, manager) =>
                 {
                     app.ApplicationServices.GetService<UserWebSocketContainer>()
-                        .Remove(socket.Id);
+                        .Remove(socket);
                 };
-
-                //handler.OnReceived = (socket, context, arg3, arg4) => { };
             });
             return app;
         }
-
-        //public static IApplicationBuilder UseWebSocketForOrderAdminNotify(this IApplicationBuilder app, string url)
-        //{
-        //    app.UseOrnamentWebSocket(setting =>
-        //    {
-        //        var handler = setting.AddText(url);
-
-        //        handler.OnClosed = (socket, http, manager) =>
-        //        {
-        //            app.ApplicationServices.GetService<UserWebSocketContainer>()
-        //                .Remove(socket.Id);
-        //        };
-
-        //        //handler.OnReceived = (socket, context, arg3, arg4) => { };
-        //    });
-        //    return app;
-        //}
     }
 }

@@ -22,7 +22,6 @@ namespace Order.System.Controllers
         public IActionResult Error()
         {
             var error = HttpContext.Features.Get<IExceptionHandlerFeature>();
-
             if (Request.IsAjaxRequest())
                 return Json(new
                 {

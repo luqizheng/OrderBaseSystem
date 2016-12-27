@@ -40,7 +40,13 @@ namespace Order.System.Controllers
             if (creatingInfo.RemindSeconds <= 5)
             {
                 _logger.LogInformation("submit order");
-                return _orderService.CreateOrder(creatingInfo, game, "111222");
+                var order= _orderService.CreateOrder(creatingInfo, game, "111222");
+                return new OrderCreatedResult
+                {
+                    Id = order.Id,
+                    OpenPrice = order.OpenInfo.OpenPrice.Bid,
+                    ExpireDateTime = order.CloseTime
+                };
             }
             throw new OrderCreatingException("市价已经变化，请确保浏览器时间和服务器一致。");
         }

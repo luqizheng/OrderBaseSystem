@@ -39,14 +39,15 @@ namespace Order.System
 
             services.AddIdentity<User, Role>()
                 .AddHsIdentity()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders(
+     );
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = true;
+                options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
+                options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
 
                 // Lockout settings
@@ -59,7 +60,7 @@ namespace Order.System
                 options.Cookies.ApplicationCookie.LogoutPath = "/Home/LogOff";
 
                 // User settings
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = false;
             });
 
             //报价设置
@@ -91,6 +92,7 @@ namespace Order.System
             loggerFactory.AddDebug();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+         
             env.EnvironmentName = EnvironmentName.Production;
             if (env.IsDevelopment())
             {
@@ -100,13 +102,19 @@ namespace Order.System
             {
                 app.UseExceptionHandler("/error");
             }
+            //UseIdentity 必须在 UseMvc之前，否则会报错
+            //No authentication handler is configured to handle the scheme: Identity.application.
+            app.UseIdentity();
+            app.UseCookieAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
-            app.UseIdentity();
+          
+        
 
             //与业务相关的
             //Redist 订阅
@@ -119,7 +127,7 @@ namespace Order.System
             app.UseWebSocketQuotationStaus();
             //Order相关
             app.ApplicationServices.UseOrderService(); //启动平仓服务。
-            app.UseWebSocketForOrderNotify("/notify/order", http => false); //启动OrderNotify,
+            app.UseWebSocketForOrderNotify(http => (http.User.IsInRole("admin")), "/notify/order"); //启动OrderNotify,
         }
     }
 }

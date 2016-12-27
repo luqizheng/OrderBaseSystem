@@ -44,7 +44,7 @@ namespace Order.System.Controllers
             {
                 LoginId = value.User,
                 Password = value.Password,
-                Name = "User"
+                Name = value.User,
             };
             //_signInManager.SignInAsync(appUser, false);
             var result = _signInManager.PasswordSignInAsync(appUser, appUser.Password, false, false).Result;

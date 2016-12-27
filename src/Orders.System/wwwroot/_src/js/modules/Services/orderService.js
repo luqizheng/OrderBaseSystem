@@ -7,4 +7,4 @@ function buy(order) {
 
 module.exports = {
     buy: buy
-}
+};
