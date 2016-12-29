@@ -76,11 +76,11 @@ namespace Orders
                 _notify.OnCreating(dto);
 
                 var openPrice = GetOpenPrice(dto, game, user);
-                var order = CreateOrder(dto, user, game);
-                order.Open(openPrice);
+                var order = CreateOrder(dto, user);
+                order.Open(openPrice, game);
 
                 _orderContext.UncloseOrders.Add(order);
-                _orderStore.Insert(order);
+                _orderStore.Add(order);
 
                 _notify.OnCreated(order);
                 return order;
@@ -97,12 +97,13 @@ namespace Orders
         /// <param name="user"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        private Order CreateOrder(OpenOrderInfo dto, string user, Game game)
+        private Order CreateOrder(OpenOrderInfo dto, string user)
         {
-            var order = new Order(dto.Volume, dto.Direction)
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+            if (user == null) throw new ArgumentNullException(nameof(user));
+           
+            var order = new Order(dto.Volume, dto.Direction, user)
             {
-                User = user,
-                Game = game,
                 Id = _orderIdGenerator.Next()
             };
             order.OpenInfo.ClientPostTime = dto.ClientPostTime;

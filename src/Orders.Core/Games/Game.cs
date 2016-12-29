@@ -13,6 +13,8 @@ namespace Orders.Games
             TimePeriods = new Dictionary<DayOfWeek, TimePeriod>();
             this.Symbol = symbol;
             this.Name = name;
+            this.Rate = 1m;
+            Cycle = 1;
         }
         [System.Obsolete("please use input param for game")]
         public Game()

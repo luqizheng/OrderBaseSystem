@@ -2,7 +2,7 @@
 
 namespace Orders
 {
-    public class OrderCreatingException : Exception
+    public class OrderCreatingException : OrderException
     {
         public OrderCreatingException(string error) : base(error)
         {

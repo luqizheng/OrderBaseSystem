@@ -4,7 +4,6 @@ using System.Linq;
 using Dapper;
 using Orders.Quotations;
 using Ornament.Stores;
-using Ornament.Uow;
 
 namespace Orders.Stores
 {
@@ -14,9 +13,14 @@ namespace Orders.Stores
         {
         }
 
+        public Order Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IQueryable<Order> Entities { get; }
 
-        public void Insert(Order order)
+        public override void Add(Order order)
         {
             var sql = @"
             INSERT INTO[dbo].[TB_Biz_Trades]
@@ -131,7 +135,7 @@ namespace Orders.Stores
                 boInterval = order.Game.Cycle,
                 boPercent = order.Game.Rate,
                 OrgOpenTime = (DateTime?)null,
-                OrgOpenPrice = order.OpenInfo.OpenPrice.Bid,
+                OrgOpenPrice = order.OpenInfo.OpenPrice.Adjusted ? order.OpenInfo.OpenPrice.SrcBid : (decimal?)null,
                 OrgCloseTime = (DateTime?)null,
                 OrgClosePrice = 0m,
                 OrgProfit = 0m,
@@ -166,21 +170,47 @@ namespace Orders.Stores
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Order> GetUncloseOrders(DateTime closeTime)
+        public IEnumerable<Order> GetUncloseOrders(string user)
         {
-            throw new NotImplementedException();
+            //TODO no finish
+            var sql = @"select MTOrder Id,  Account User, CMD Direction,
+from TB_BIZ_Trades where Account=@user and CMD in (0,1)";
+
+            return Uow.Connection.Query<Order.OpenOrderInformation,
+                Order.CloseOrderInformation, Order, Order>(sql,
+                (openInfo, closeInfo, order) =>
+                {
+                    order.CloseInfo.CompleteTime = closeInfo.CompleteTime;
+                    order.CloseInfo.Price = closeInfo.Price;
+
+                    order.OpenInfo.OpenPrice = openInfo.OpenPrice;
+                    order.OpenInfo.ClientPostTime = openInfo.ClientPostTime;
+                    return order;
+                }, new { user });
         }
 
         public int? GetLastOrderId(IOrderIdGenerator idGenerator)
         {
             var sql = "select MAX(MTOrder) from [TB_Biz_Trades]";
-            return this.Uow.Connection.ExecuteScalar<int?>(sql);
+            return Uow.Connection.ExecuteScalar<int?>(sql);
         }
 
-        public override void Add(Order t)
+        public void Close(Order order)
         {
-            throw new NotImplementedException();
+            var sql = @"update TB_biz_trades set isClosed=1,CloseTime=@closeTime, 
+OrgCloseTime =@OrgCloseTime, OrgClosePrice = @OrgClosePrice,Profit=@Profit where MTOrder=@id";
+            var task = Uow.Connection.ExecuteAsync(sql, new
+            {
+                closeTime = order.CloseTime,
+                id = order.Id,
+                OrgCloseTime = order.CloseInfo.CompleteTime,
+                OrgClosePrice =
+                 order.CloseInfo.Price.Adjusted ? order.CloseInfo.Price.SrcBid : order.CloseInfo.Price.Bid,
+                order.Profit
+            }).Result;
+
         }
+
 
         public override void Delete(Order t)
         {

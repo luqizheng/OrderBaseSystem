@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ornament.Domain.Stores;
 
 namespace Orders.Stores
 {
-    public interface IOrderStore
+    public interface IOrderStore:IStore<Order,int>
     {
-        void Insert(Order order);
-
-        void Update(Order order);
 
         Order GetLastOrder(string user, int symbol);
 
         Order GetLastOrder(string user);
 
         Order GetLastOrder();
-        IEnumerable<Order> GetUncloseOrders(DateTime closeTime);
+        IEnumerable<Order> GetUncloseOrders(string user);
 
         int? GetLastOrderId(IOrderIdGenerator idGenerator);
+        void Close(Order order);
+       
     }
 }

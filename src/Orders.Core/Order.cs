@@ -5,7 +5,6 @@ using Orders.Quotations;
 namespace Orders
 {
     /// <summary>
-    /// 
     /// </summary>
     public class Order
     {
@@ -21,13 +20,14 @@ namespace Orders
         /// </summary>
         /// <param name="volume"></param>
         /// <param name="direction"></param>
-        public Order(decimal volume, Direction direction) : this()
+        public Order(decimal volume, Direction direction, string user) : this()
         {
             if (volume <= 0)
                 throw new ArgumentOutOfRangeException(nameof(volume), "should be greater than 0");
 
             Volume = volume;
             Direction = direction;
+            this.User = user;
         }
 
 
@@ -88,25 +88,25 @@ namespace Orders
         /// <summary>
         /// </summary>
         /// <param name="openPrice"></param>
-        public void Open(Quotation openPrice)
+        /// <param name="game"></param>
+        public void Open(Quotation openPrice, Game game)
         {
             if (openPrice == null)
                 throw new ArgumentNullException(nameof(openPrice));
+            if (game == null) throw new ArgumentNullException(nameof(game));
             if (User == null)
                 throw new OrderCreatingException("User can't be null.");
-            if (this.Game == null)
+         
+            if (game.Symbol == null)
                 throw new OrderCreatingException("Game can't be null.");
-            if (this.Game.Symbol == null)
-            {
-                throw new OrderCreatingException("Game can't be null.");
-            }
+            this.Game = game;
             ConfirmDateTime = DateTime.Now;
             OpenInfo.OpenPrice = openPrice;
             CloseTime = Game.GetCloseTime(openPrice.ArrivedTime.DateTime);
             Status = OrderStatus.Opening;
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="closePrice"></param>
         public void Close(Quotation closePrice)
@@ -114,8 +114,8 @@ namespace Orders
             if (closePrice == null)
                 throw new ArgumentNullException(nameof(closePrice));
 
-            CloseInfo.ExecuteCloseTime = closePrice;
-            CloseTime = DateTime.Now;
+            CloseInfo.Price = closePrice;
+            CloseInfo.CompleteTime = DateTime.Now;
             Status = OrderStatus.Completed;
 
             if (closePrice == OpenInfo.OpenPrice)
@@ -125,8 +125,8 @@ namespace Orders
             else
                 Profit = Direction == Direction.Up ? -Volume : Volume * Game.Rate;
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public class OpenOrderInformation
         {
@@ -134,20 +134,20 @@ namespace Orders
 
             public DateTime? ClientPostTime { get; set; }
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public class CloseOrderInformation
         {
             /// <summary>
-            /// 执行平仓的时间。
+            ///     价格信息
             /// </summary>
-            public Quotation ExecuteCloseTime { get; internal set; }
+            public Quotation Price { get; set; }
 
             /// <summary>
-            ///     到期
+            ///     执行平仓的时间。
             /// </summary>
-            public DateTime CompleteTime { get; internal set; }
+            public DateTime CompleteTime { get; set; }
         }
     }
 }

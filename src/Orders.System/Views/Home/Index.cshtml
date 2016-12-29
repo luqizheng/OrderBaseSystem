@@ -23,7 +23,7 @@ scripts{
 
         <ul>
             <li :for="(id,el) in @@symbols">
-               
+
                 <a href="javascript:;" :class="el.active?'symbol-active':''" :click="active(el)">
                     {{el.info.name}}
                 </a>
@@ -69,15 +69,24 @@ scripts{
 <div class="container-fluid">
     <div class="col-md-6">
         <div id="admin-order-output" :controller="orderAdminCtrl">
-            <table>
+            <table class="table-bordered table">
                 <tr>
                     <td>订单号</td>
+                    <td>状态</td>
+                    <td>建仓Time</td>
                     <td>建仓Price</td>
-                    <td>ExecuteCloseTime</td>
+                    <td>Close Time</td>
+                    <td>Close Price</td>
                 </tr>
                 <tbody>
-                    <tr>
-                        <td></td>
+                    <tr :for="el in @@orders">
+                        <td>{{el.id}}</td>
+                        <td>{{el.status}}</td>
+                        <td>{{el.openTime}}</td>
+                        <td>{{el.openPrice}}</td>
+                        <td>{{el.closeTime}}</td>
+                        <td>{{el.closePrice}}</td>
+
                     </tr>
 
                 </tbody>

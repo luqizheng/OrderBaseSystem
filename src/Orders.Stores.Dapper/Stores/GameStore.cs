@@ -4,7 +4,6 @@ using System.Linq;
 using Orders.Games;
 using Orders.Quotations;
 using Ornament.Stores;
-using Ornament.Uow;
 
 namespace Orders.Stores
 {
@@ -18,16 +17,11 @@ namespace Orders.Stores
 
         public override Game Get(int gameId)
         {
-            return new Game
+            return new Game("1分钟", new Symbol {Id = 1})
             {
                 Cycle = 1,
-                Name = "1分钟",
                 Rate = 0.92m,
-                Id = 1,
-                Symbol = new Symbol
-                {
-                    Id = 1
-                }
+                Id = 1
             };
         }
 
@@ -35,12 +29,10 @@ namespace Orders.Stores
         {
             return new List<Game>
             {
-                new Game
+                new Game("1分钟", symbol)
                 {
                     Cycle = 1,
-                    Name = "1分钟",
                     Rate = 0.92m,
-                    Symbol = symbol,
                     Id = 1
                 }
             };

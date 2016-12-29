@@ -13,7 +13,7 @@ namespace Orders.Policy.PricePolicies
                 order.Game.Symbol.Id,
                 order.CloseTime, false);
             price = null;
-            if (matchesPrice.Any())
+            if (!matchesPrice.Any())
                 return false;
             switch (order.Direction)
             {

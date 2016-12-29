@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Orders.Quotations;
 
-namespace Orders
+namespace Orders.Quotations
 {
-    internal static class LinqHelper
+    public static class LinqHelper
     {
         public static Quotation Max(this IEnumerable<Quotation> selectors)
         {

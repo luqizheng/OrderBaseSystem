@@ -1,15 +1,31 @@
-﻿/// <reference path="../services/ordernotify.js" />
+﻿// / <reference path="../services/ordernotify.js" />
 var Avalon = require('avalon');
-var OrderNotify = require("../services/ordernotify.js");
 
-function init(wsUrl) {
-    var orderNotify = new OrderNotify(wsUrl);
+var OrderNotify = require('../services/ordernotify').OrderNotify;
 
-    var vm = Avalon.define({
-        $id: "orderAdminCtrl",
-        orders: []
+var orderNotify=null;
 
-    });
+var ordersVM;
 
-    return vm;
+function init (wsUrl,globalStore) {
+  orderNotify = new OrderNotify(wsUrl)
+
+  ordersVM = Avalon.define({
+    $id: 'orderAdminCtrl',
+    orders: []
+
+  });
+}
+
+module.exports={
+    CreateCtrl:init,
+    Start:function(){
+      orderNotify.connect();
+    },
+    Add:function(order) {
+        ordersVM.orders.push(order);
+    },
+    Stop: function () { 
+      orderNotify.disconnect();
+    }
 }

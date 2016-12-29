@@ -23,17 +23,17 @@ namespace Orders.Test
             var queuenew = new UncloseOrderQueue();
             for (var i = 0; i < 10; i++)
             {
-
                 var order = new Order
                 {
                     User = "123=-test",
                     Id = (i + 1).ToString(),
+
                 };
-                order.Game = new Game("Test", _symbol)
+                var game = new Game("Test", _symbol)
                 {
                     Cycle = radm.Next(1, 120)
                 };
-                order.Open(new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds()));
+                order.Open(new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds()), game);
                 expect.Add(order.CloseTime);
                 queuenew.Add(order);
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Order.System.Models.OrderViewModels;
@@ -21,6 +22,12 @@ namespace Order.System.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public IList<OrderDto> Unclose()
+        {
+            return null;
+        }
+
         // POST api/values
         [HttpPost]
         public OrderCreatedResult Post([FromBody] OrderCreatingInfo value)
@@ -31,8 +38,8 @@ namespace Order.System.Controllers
             var creatingInfo = new OpenOrderInfo
             {
                 ClientPostTime = value.ClientTime != null
-                ? DateTimeOffset.FromUnixTimeMilliseconds(value.ClientTime.Value).DateTime
-                : (DateTime?)null,
+                    ? DateTimeOffset.FromUnixTimeMilliseconds(value.ClientTime.Value).DateTime
+                    : (DateTime?) null,
                 Direction = value.Direction,
                 Volume = value.Volume
             };
@@ -40,7 +47,7 @@ namespace Order.System.Controllers
             if (creatingInfo.RemindSeconds <= 5)
             {
                 _logger.LogInformation("submit order");
-                var order= _orderService.CreateOrder(creatingInfo, game, "111222");
+                var order = _orderService.CreateOrder(creatingInfo, game, "111222");
                 return new OrderCreatedResult
                 {
                     Id = order.Id,

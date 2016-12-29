@@ -8,27 +8,10 @@ using Ornament.Uow;
 
 namespace HS.Identity.Store
 {
-
     public class RoleStore : DbConnectionStore<Role, int>, IRoleStore<Role>
     {
-        public override void Update(Role t)
+        public RoleStore(DbUow context) : base(context)
         {
-            throw new NotImplementedException();
-        }
-
-        public override void Add(Role t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(Role t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Role Get(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public override IQueryable<Role> Entities { get; }
@@ -85,8 +68,24 @@ namespace HS.Identity.Store
             throw new NotImplementedException();
         }
 
-        public RoleStore(DbUow context) : base(context)
+        public override void Update(Role t)
         {
+            throw new NotImplementedException();
+        }
+
+        public override void Add(Role t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Delete(Role t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Role Get(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

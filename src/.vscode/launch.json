@@ -10,7 +10,7 @@
             "program": "${workspaceRoot}/bin/Debug/<target-framework>/<project-name.dll>",
             "args": [],
             "cwd": "${workspaceRoot}",
-            "stopAtEntry": ,
+           
             "externalConsole": false
         },
         {

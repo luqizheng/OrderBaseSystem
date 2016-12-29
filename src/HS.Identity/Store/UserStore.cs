@@ -173,7 +173,13 @@ namespace HS.Identity.Store
 
         public Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+             var user = new User
+            {
+                Id = 1,
+                LoginId = "US",
+                Name = "WTF"
+            };
+            return Task.FromResult(user);
         }
 
         public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)

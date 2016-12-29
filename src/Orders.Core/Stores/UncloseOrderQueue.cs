@@ -11,7 +11,7 @@ namespace Orders.Stores
     {
         private readonly ILogger _logger;
         private readonly ConcurrentPriorityQueue<Order> _pools;
-     
+
         public UncloseOrderQueue(ILogger logger) : this()
         {
             if (logger == null) throw new ArgumentNullException(nameof(logger));

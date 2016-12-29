@@ -17,13 +17,13 @@ function init() {
 
         },
         up: function () {
-            but(0);
+            buy(0);
         },
         down: function () {
-            but(1);
+            buy(1);
         }
     });
-    function but(upOrDown) {
+    function buy(upOrDown) {
 
         var postData = vm.openOrderInfo.$model;
         postData.direction = upOrDown;

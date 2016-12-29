@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Extensions.Logging;
-using Orders.Collections;
 using Orders.Stores;
 
 namespace Orders
@@ -17,9 +16,5 @@ namespace Orders
         }
 
         public UncloseOrderQueue UncloseOrders { get; }
-
-    
-
-
     }
 }

@@ -9,7 +9,8 @@ var Redux = require("../../../node_modules/redux/dist/redux");
 var ReduxActionDefined = require("./modules/ctrl/reduxAction.js");
 
 var modules = {
-    symbol: null
+    symbol: null,
+    order: null
 };
 function CreateGlobalStore(inverstmentCtrl) {
     //http://cn.redux.js.org/docs/introduction/ThreePrinciples.html
@@ -27,8 +28,9 @@ function CreateGlobalStore(inverstmentCtrl) {
                 inverstmentCtrl.setSymbol(action.symbol);
                 break;
             case ReduxActionDefined.DEFINED.Login:
-                console.log("start quotation substribe.")
+                console.log("start quotation substribe.");
                 modules.symol.StartQuotationProvider();
+                modules.order.Start();
                 break;
             case ReduxActionDefined.DEFINED.Logout:
                 break;
@@ -49,6 +51,9 @@ function init() {
     modules.symol = require("./modules/ctrl/symbolctrl.js");
     modules.symol.CreateCtrl("ws://localhost:5000/quote", symbolStore);
 
+    //orders
+    modules.order = require("./modules/ctrl/orderAdminCtrl.js");
+    modules.order.CreateCtrl("ws://localhost:5000/notify/order", symbolStore);
 
     //登录
     var loginCtrl = require("./modules/ctrl/loginctrl.js").init(symbolStore);
