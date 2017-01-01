@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ornament.Domain.Stores;
 
 namespace Orders.Stores
 {
-    public interface IOrderStore:IStore<Order,int>
+    public interface IOrderStore : IStore<Order, int>
     {
-
         Order GetLastOrder(string user, int symbol);
 
         Order GetLastOrder(string user);
@@ -16,6 +14,5 @@ namespace Orders.Stores
 
         int? GetLastOrderId(IOrderIdGenerator idGenerator);
         void Close(Order order);
-       
     }
 }

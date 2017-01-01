@@ -36,11 +36,10 @@ namespace Order.System
             services.AddOrnamentWebSocket(); //添加OrnamentWebSocket去处理WebSocket问题。
 
 
-
             services.AddIdentity<User, Role>()
                 .AddHsIdentity()
                 .AddDefaultTokenProviders(
-     );
+                );
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
@@ -70,7 +69,7 @@ namespace Order.System
                 {
                     options.Password = "123456";
                     options.Server = "192.168.1.7";
-                    options.Channel = new[] { "DA_QuoteChannel" };
+                    options.Channel = new[] {"DA_QuoteChannel"};
                 }) //添加redis 报价服务程序
                 .AddDemoQuotationProvider() //添加demo播放器。如果不适用请comment这调代码
                 .AddWebSocketPublisher(); //添加推送的报价
@@ -92,29 +91,24 @@ namespace Order.System
             loggerFactory.AddDebug();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-         
+
             env.EnvironmentName = EnvironmentName.Production;
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseExceptionHandler("/error");
-            }
             //UseIdentity 必须在 UseMvc之前，否则会报错
             //No authentication handler is configured to handle the scheme: Identity.application.
             app.UseIdentity();
             app.UseCookieAuthentication();
-
+            app.UseWebSockets();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
-          
-        
+
 
             //与业务相关的
             //Redist 订阅
@@ -127,7 +121,7 @@ namespace Order.System
             app.UseWebSocketQuotationStaus();
             //Order相关
             app.ApplicationServices.UseOrderService(); //启动平仓服务。
-            app.UseWebSocketForOrderNotify(http => (http.User.IsInRole("admin")), "/notify/order"); //启动OrderNotify,
+            app.UseWebSocketForOrderNotify(http => http.User.IsInRole("admin"), "/notify/order"); //启动OrderNotify,
         }
     }
 }

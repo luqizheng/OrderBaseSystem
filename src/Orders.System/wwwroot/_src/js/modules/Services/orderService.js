@@ -7,7 +7,7 @@ function buy(order) {
 
 module.exports = {
     buy: buy,
-    listUnclose:function(){
+    listUnclose: function() {
 
     }
 

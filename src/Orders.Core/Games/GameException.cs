@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orders.Games
 {
@@ -9,7 +6,6 @@ namespace Orders.Games
     {
         public GameException(string message) : base(message)
         {
-
         }
     }
 }

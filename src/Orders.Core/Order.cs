@@ -20,6 +20,7 @@ namespace Orders
         /// </summary>
         /// <param name="volume"></param>
         /// <param name="direction"></param>
+        /// <param name="user"></param>
         public Order(decimal volume, Direction direction, string user) : this()
         {
             if (volume <= 0)
@@ -27,14 +28,14 @@ namespace Orders
 
             Volume = volume;
             Direction = direction;
-            this.User = user;
+            User = user;
         }
 
 
         /// <summary>
         ///     收到报价请求的时间。
         /// </summary>
-        public virtual DateTime CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
 
         /// <summary>
         ///     确认报价的时间
@@ -43,7 +44,7 @@ namespace Orders
 
         /// <summary>
         /// </summary>
-        public virtual Direction Direction { get; set; }
+        public Direction Direction { get; set; }
 
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Orders
 
         /// <summary>
         /// </summary>
-        public virtual decimal Volume { get; set; }
+        public decimal Volume { get; set; }
 
         /// <summary>
         /// </summary>
@@ -96,10 +97,10 @@ namespace Orders
             if (game == null) throw new ArgumentNullException(nameof(game));
             if (User == null)
                 throw new OrderCreatingException("User can't be null.");
-         
+
             if (game.Symbol == null)
                 throw new OrderCreatingException("Game can't be null.");
-            this.Game = game;
+            Game = game;
             ConfirmDateTime = DateTime.Now;
             OpenInfo.OpenPrice = openPrice;
             CloseTime = Game.GetCloseTime(openPrice.ArrivedTime.DateTime);
@@ -121,9 +122,9 @@ namespace Orders
             if (closePrice == OpenInfo.OpenPrice)
                 Profit = 0;
             else if (closePrice.Bid > OpenInfo.OpenPrice.Bid)
-                Profit = Direction == Direction.Down ? -Volume : Volume * Game.Rate;
+                Profit = Direction == Direction.Down ? -Volume : Volume*Game.Rate;
             else
-                Profit = Direction == Direction.Up ? -Volume : Volume * Game.Rate;
+                Profit = Direction == Direction.Up ? -Volume : Volume*Game.Rate;
         }
 
         /// <summary>

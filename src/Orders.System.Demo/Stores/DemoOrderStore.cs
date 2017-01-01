@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Orders.Stores;
-using Ornament.Domain.Stores;
 
 namespace Orders.System.Demo.Stores
 {
     public class DemoOrderStore : IOrderStore
     {
-
         public Order GetLastOrder(string user, int symbol)
         {
             throw new NotImplementedException();
@@ -29,22 +27,12 @@ namespace Orders.System.Demo.Stores
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Order> GetUncloseOrders(DateTime closeTime)
-        {
-            throw new NotImplementedException();
-        }
-
         public int? GetLastOrderId(IOrderIdGenerator idGenerator)
         {
             throw new NotImplementedException();
         }
 
         public void Close(Order order)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetLastOrderId()
         {
             throw new NotImplementedException();
         }
@@ -75,5 +63,15 @@ namespace Orders.System.Demo.Stores
         }
 
         public IQueryable<Order> Entities { get; }
+
+        public IEnumerable<Order> GetUncloseOrders(DateTime closeTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetLastOrderId()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

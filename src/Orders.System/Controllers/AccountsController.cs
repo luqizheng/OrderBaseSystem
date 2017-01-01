@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using HS.Identity;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Order.System.Models.AccountViewModels;
@@ -26,7 +25,7 @@ namespace Order.System.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new[] { "value1", "value2" };
+            return new[] {"value1", "value2"};
         }
 
         // GET api/values/5
@@ -44,7 +43,7 @@ namespace Order.System.Controllers
             {
                 LoginId = value.User,
                 Password = value.Password,
-                Name = value.User,
+                Name = value.User
             };
             //_signInManager.SignInAsync(appUser, false);
             var result = _signInManager.PasswordSignInAsync(appUser, appUser.Password, false, false).Result;

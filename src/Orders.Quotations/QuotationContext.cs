@@ -42,7 +42,6 @@ namespace Orders.Quotations
             QuotationQueue queue;
             if (!_list.ContainsKey(quotation.Symbol.Id))
             {
-               
                 queue = new QuotationQueue();
                 if (!_list.TryAdd(quotation.Symbol.Id, queue))
                     queue = _list[quotation.Symbol.Id];
@@ -88,7 +87,7 @@ namespace Orders.Quotations
                 return queue;
             return null;
         }
-       
+
         /// <summary>
         ///     获取某个报价时间的唯一报价.这个是精确报价。
         /// </summary>

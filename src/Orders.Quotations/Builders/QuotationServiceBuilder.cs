@@ -14,6 +14,5 @@ namespace Orders.Quotations
         public IServiceCollection Services { get; }
 
         public string QuotationPath { get; set; }
-    
     }
 }

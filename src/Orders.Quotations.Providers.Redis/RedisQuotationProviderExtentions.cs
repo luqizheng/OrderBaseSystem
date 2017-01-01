@@ -22,7 +22,7 @@ namespace Orders.Quotations
             {
                 var store = p.GetRequiredService<ISymbolStore>();
                 var builder = p.GetRequiredService<RedistQuotationProviderSetting>();
-                return (QuotationProvider)new RedisQuotationProvider(store, builder);
+                return (QuotationProvider) new RedisQuotationProvider(store, builder);
             });
 
             return quotationServiceBuilder;

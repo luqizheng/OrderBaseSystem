@@ -101,7 +101,7 @@ namespace Orders
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
             if (user == null) throw new ArgumentNullException(nameof(user));
-           
+
             var order = new Order(dto.Volume, dto.Direction, user)
             {
                 Id = _orderIdGenerator.Next()

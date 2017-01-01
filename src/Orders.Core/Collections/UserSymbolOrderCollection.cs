@@ -3,13 +3,15 @@ using System.Collections.Concurrent;
 
 namespace Orders.Collections
 {
+    /// <summary>
+    ///     基于用户统计的集合
+    /// </summary>
     public class UserSymbolOrderCollection
     {
         private readonly ConcurrentDictionary<string, SymbolOrderCollection>
             _userOrderRelative = new ConcurrentDictionary<string, SymbolOrderCollection>();
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -20,8 +22,8 @@ namespace Orders.Collections
                 return 0;
             return collection.Count;
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="symbolId"></param>
         /// <param name="user"></param>
@@ -38,8 +40,8 @@ namespace Orders.Collections
             collection.OrderCount(symbolId, out amount, out orderCount)
                 ;
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="symbolId"></param>
         /// <param name="user"></param>
@@ -52,8 +54,8 @@ namespace Orders.Collections
 
             return collection.GetLastOrder(symbolId);
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="order"></param>
         public void Add(Order order)
@@ -65,8 +67,8 @@ namespace Orders.Collections
 
             collection.Add(order);
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="order"></param>
         public void Remove(Order order)

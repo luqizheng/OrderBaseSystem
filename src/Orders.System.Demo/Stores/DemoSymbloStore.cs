@@ -164,11 +164,9 @@ namespace Orders.System.Demo.Stores
 
         public Symbol Get(int symbolId)
         {
-            foreach (var symbol in this.symbols)
-            {
-                if(symbol.Id==symbolId)
+            foreach (var symbol in symbols)
+                if (symbol.Id == symbolId)
                     return symbol;
-            }
             return null;
         }
     }

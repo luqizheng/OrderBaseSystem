@@ -21,8 +21,8 @@ namespace Orders.Quotations
             long provierServerTickTime
         ) : this(symbolModel, provierServerTickTime, DateTime.Now)
         {
-
         }
+
         /// <param name="provierServerTickTime">Unix Time Tick= local time</param>
         public Quotation(Symbol symbolModel,
             long provierServerTickTime, DateTime arrivedTime
@@ -102,9 +102,9 @@ namespace Orders.Quotations
             {
                 if (_ask == null)
                 {
-                    var fu = (int)Math.Pow(10, Symbol.Scale);
-                    var bidInt = Bid * fu;
-                    _ask = (bidInt + Spread) / Convert.ToDecimal(fu);
+                    var fu = (int) Math.Pow(10, Symbol.Scale);
+                    var bidInt = Bid*fu;
+                    _ask = (bidInt + Spread)/Convert.ToDecimal(fu);
                 }
 
                 return _ask.Value;
@@ -118,13 +118,13 @@ namespace Orders.Quotations
 
         public string ToClient(bool useArrivedTime = false)
         {
-            var bid = Convert.ToInt32(Bid * (int)Math.Pow(10, Symbol.Scale)).ToString();
+            var bid = Convert.ToInt32(Bid*(int) Math.Pow(10, Symbol.Scale)).ToString();
 
 
             var basicInfoPart = string.Format("{0},{1},{2}",
                 Symbol.Id,
                 bid,
-                (int)Direction
+                (int) Direction
             );
 
             return string.Format("{0}|{1}",

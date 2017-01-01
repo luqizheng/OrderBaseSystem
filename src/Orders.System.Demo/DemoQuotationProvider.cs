@@ -10,8 +10,8 @@ namespace Orders.System.Demo
 {
     public class DemoQuotationProvider : QuotationProvider
     {
-        private readonly ISymbolStore _stores;
         private readonly Random _radom = new Random(DateTime.Now.Day);
+        private readonly ISymbolStore _stores;
         private readonly IDictionary<int, Symbol> symbols = new Dictionary<int, Symbol>();
         private Timer _timer;
 
@@ -29,7 +29,7 @@ namespace Orders.System.Demo
 
         private void Method(object state)
         {
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
                 var id = _radom.Next(1, 20);
                 if (symbols.ContainsKey(id))

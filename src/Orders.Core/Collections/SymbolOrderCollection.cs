@@ -11,18 +11,17 @@ namespace Orders.Collections
 
         private readonly ConcurrentDictionary<int, OrderCollection>
             _userOrderRelative = new ConcurrentDictionary<int, OrderCollection>();
+
         /// <summary>
-        /// 
         /// </summary>
         public int Count
         {
             get { return _userOrderRelative.Values.Sum(f => f.Count); }
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="order"></param>
-
         public void Add(Order order)
         {
             if (order == null) throw new ArgumentNullException(nameof(order));

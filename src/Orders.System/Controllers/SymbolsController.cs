@@ -32,7 +32,7 @@ namespace Order.System.Controllers
                 select new
                 {
                     price = quote?.Bid ?? 0m,
-                    info=symbol
+                    info = symbol
                 };
             return result;
         }

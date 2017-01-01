@@ -9,8 +9,8 @@ namespace Orders.Policy
         ///     0为最高级别
         /// </summary>
         int Priority { get; set; }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="order"></param>

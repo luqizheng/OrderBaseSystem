@@ -26,8 +26,7 @@ namespace Orders.Test
                 var order = new Order
                 {
                     User = "123=-test",
-                    Id = (i + 1).ToString(),
-
+                    Id = (i + 1).ToString()
                 };
                 var game = new Game("Test", _symbol)
                 {

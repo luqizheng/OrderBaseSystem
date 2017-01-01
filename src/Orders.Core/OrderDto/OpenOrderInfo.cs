@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using Orders.Quotations;
 
 // ReSharper disable once CheckNamespace
@@ -35,7 +34,7 @@ namespace Orders
             {
                 if (ClientPostTime == null)
                     return 0;
-                return (this.ArriveDateTime - ClientPostTime.Value).TotalSeconds;
+                return (ArriveDateTime - ClientPostTime.Value).TotalSeconds;
             }
         }
     }

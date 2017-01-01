@@ -3,7 +3,7 @@
 
 function build(selector, ajaxFormOptions, fnSubmit) {
     require.ensure(["jq-form", "jq-val", "jq-val-uo"],
-        function () {
+        function() {
             require("jq-val");
             require("jq-val-uo");
             require("jq-form");
@@ -15,19 +15,18 @@ function build(selector, ajaxFormOptions, fnSubmit) {
 
             try {
                 if ($formSetting) {
-                    $formSetting.settings.submitHandler = function () {
+                    $formSetting.settings.submitHandler = function() {
                         fnSubmit($form);
                         return false;
                     };
                 } else {
-                    $form.submit(function (e) {
+                    $form.submit(function(e) {
                         fnSubmit($form);
                         e.preventDefault();
                     });
                 }
                 return $form;
-            }
-            catch (e) {
+            } catch (e) {
                 console.error(e);
             }
         });
@@ -35,14 +34,16 @@ function build(selector, ajaxFormOptions, fnSubmit) {
 
 
 module.exports = {
-    'for': function (selector, fnSuccess) {
-        build(selector, false, function ($form) {
-            $form.ajaxSubmit(fnSuccess);
-        }, fnSuccess);
+    'for': function(selector, fnSuccess) {
+        build(selector,
+            false,
+            function($form) {
+                $form.ajaxSubmit(fnSuccess);
+            },
+            fnSuccess);
     },
-    forWebApi: function (selector, fnSubmit) {
+    forWebApi: function(selector, fnSubmit) {
         build(selector, false, fnSubmit);
 
     }
 };
-

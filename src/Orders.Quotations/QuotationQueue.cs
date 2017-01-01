@@ -175,11 +175,8 @@ namespace Orders.Quotations
             }
             var remind = hight - low;
             if (digits != 0)
-            {
-                remind = remind * (decimal)Math.Pow(10, digits);
-            }
+                remind = remind*(decimal) Math.Pow(10, digits);
             amplitude = Convert.ToInt32(remind);
         }
     }
-
 }

@@ -1,4 +1,4 @@
-﻿var $ = require('jquery');
+﻿var $ = require("jquery");
 
 function WepApi(url) {
     this.opts = {
@@ -6,21 +6,18 @@ function WepApi(url) {
         contentType: "application/json; charset=utf-8"
     };
 
-    this.Put = function (data) {
+    this.Put = function(data) {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="func"></param>
-
         var opts = this.ext.call(this, "PUT", data);
 
         return $.ajax(opts);
     };
 
-    this.Delete = function (data) {
+    this.Delete = function(data) {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="func"></param>
@@ -30,18 +27,16 @@ function WepApi(url) {
         }
         return $.ajax(opts);
     };
-    this.Post = function (data) {
+    this.Post = function(data) {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="func"></param>
         var opts = this.ext.call(this, "POST", data);
         return $.ajax(opts);
     };
-    this.Get = function (data) {
+    this.Get = function(data) {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="func"></param>
@@ -50,7 +45,7 @@ function WepApi(url) {
     };
 
 
-    this.ext = function (method, data) {
+    this.ext = function(method, data) {
 
         var a = $.extend({}, this.opts, { type: method });
 
@@ -62,7 +57,7 @@ function WepApi(url) {
 
 
 module.exports = {
-    create: function (url) {
+    create: function(url) {
         return new WepApi(url);
     }
 };

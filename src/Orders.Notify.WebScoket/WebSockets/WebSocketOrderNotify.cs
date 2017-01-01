@@ -27,10 +27,10 @@ namespace Orders.Notify.WebSockets
             _containter.SendTo(AdminGroup, new
             {
                 @event = "Open",
-                order = order,
+                order
             });
 
-            _containter.SendTo(AdminGroup, new
+            _containter.SendTo(DefaultGroup, new
             {
                 @event = "Open",
                 order = new
@@ -38,7 +38,7 @@ namespace Orders.Notify.WebSockets
                     order.Id,
                     openPrice = order.OpenInfo.OpenPrice,
                     opennTime = order.OpenInfo.OpenPrice.ArrivedTime
-                },
+                }
             });
         }
 
@@ -64,9 +64,9 @@ namespace Orders.Notify.WebSockets
                 new
                 {
                     @event = "Close",
-                    order = AdminGroup
+                    order 
                 });
-
+         
             _containter.SendTo(DefaultGroup, new
             {
                 @event = "Close",

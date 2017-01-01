@@ -9,10 +9,10 @@ var OrderNotify = (function () {
         this.url = url;
     }
     OrderNotify.prototype.onClose = function (order) {
-        console.log('onClose', order);
+        console.log("onClose", order);
     };
     OrderNotify.prototype.onOpen = function (order) {
-        console.log('onOpen', order);
+        console.log("onOpen", order);
     };
     OrderNotify.prototype.connect = function () {
         var self = this;

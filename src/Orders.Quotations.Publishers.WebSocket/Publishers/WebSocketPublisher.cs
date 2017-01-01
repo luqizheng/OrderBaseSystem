@@ -9,10 +9,6 @@ namespace Orders.Quotations.Publishers
     {
         public WebSocketHandler Handler { get; set; }
 
-        public WebSocketPublisher()
-        {
-        }
-        
         public void Publish(Quotation quotation)
         {
             if (quotation == null) throw new ArgumentNullException(nameof(quotation));

@@ -1,13 +1,14 @@
 ﻿/// <reference path="../services/orderservice.js" />
-var avalon = require('avalon');
-var orderService = require('../services/orderService.js');
+var avalon = require("avalon");
+var orderService = require("../services/orderService.js");
+
 function init() {
     var vm = avalon.define({
         $id: "investmentCtrl",
         symbol: {
             price: 0,
             symbol: {
-                name: 'test'
+                name: "test"
             }
         },
         openOrderInfo: {
@@ -16,25 +17,26 @@ function init() {
             gameId: 1
 
         },
-        up: function () {
+        up: function() {
             buy(0);
         },
-        down: function () {
+        down: function() {
             buy(1);
         }
     });
+
     function buy(upOrDown) {
 
         var postData = vm.openOrderInfo.$model;
         postData.direction = upOrDown;
         orderService.buy(postData)
-            .done(function (d) {
+            .done(function(d) {
                 alert(JSON.stringify(d));
             })
-        .error(function (http) {
-            var result = JSON.parse(http.responseText);
-            alert(result.message);
-        });
+            .error(function(http) {
+                var result = JSON.parse(http.responseText);
+                alert(result.message);
+            });
     }
 
     return vm;
@@ -42,10 +44,10 @@ function init() {
 
 
 module.exports = {
-    createCtrl: function () {
+    createCtrl: function() {
         var vm = init();
         return {
-            setSymbol: function (symbol) {
+            setSymbol: function(symbol) {
                 vm.symbol = symbol;
             }
         };

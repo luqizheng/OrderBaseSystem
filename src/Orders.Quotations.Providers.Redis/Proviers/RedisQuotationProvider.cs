@@ -12,14 +12,14 @@ namespace Orders.Quotations.Proviers
     {
         private readonly string[] _channels;
         private readonly ConfigurationOptions _options;
-        private readonly Quotations.RedistQuotationProviderSetting _setting;
+        private readonly RedistQuotationProviderSetting _setting;
         private readonly ISymbolStore _store;
 
         private ConnectionMultiplexer _service;
         private IDictionary<string, Symbol> _symbolsMap;
         private DateTime _symbolUpdateTime;
 
-        public RedisQuotationProvider(ISymbolStore store, Quotations.RedistQuotationProviderSetting setting)
+        public RedisQuotationProvider(ISymbolStore store, RedistQuotationProviderSetting setting)
         {
             if (store == null) throw new ArgumentNullException(nameof(store));
             if (setting == null) throw new ArgumentNullException(nameof(setting));
@@ -119,8 +119,8 @@ namespace Orders.Quotations.Proviers
 
             var quotation = new Quotation(symbol, time)
             {
-                Bid = Convert.ToDecimal(quotationInfo[1]) / sclare,
-                Direction = (Direction)Enum.ToObject(typeof(Direction), Convert.ToInt32(quotationInfo[2]))
+                Bid = Convert.ToDecimal(quotationInfo[1])/sclare,
+                Direction = (Direction) Enum.ToObject(typeof(Direction), Convert.ToInt32(quotationInfo[2]))
             };
             //方向
             if (quotationInfo.Length >= 4)

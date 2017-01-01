@@ -1,17 +1,16 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-us" id="@ViewBag.PageId">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title> SmartAdmin - MVC6 </title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet"/>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="~/lib/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet"/>
     <!-- Startup image for web apps -->
     <environment names="Development">
         @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -22,7 +21,7 @@
               asp-fallback-href="~/lib/font-awsome/css/font-awesome.css"
               asp-fallback-test-class="fa" asp-fallback-test-property="display"
               asp-fallback-test-value="inline-block" />*@
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 
     </environment>
     <environment names="Staging,Production">
@@ -35,25 +34,24 @@
               asp-fallback-test-class="fa" asp-fallback-test-property="display"
               asp-fallback-test-value="inline-block" />*@
 
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
     </environment>
- 
 
-  
+
     @*<link rel="shortcut icon" href="~/img/favicon/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="~/img/favicon/favicon.ico" type="image/x-icon" />*@
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
     @RenderSection("header", false)
 </head>
 <body>
 
 
-    @RenderBody()
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/avalon/avalon.js"></script>
-    @RenderSection("scripts", false)
+@RenderBody()
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/avalon/avalon.js"></script>
+@RenderSection("scripts", false)
 </body>
 </html>

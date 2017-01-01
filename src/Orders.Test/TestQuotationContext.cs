@@ -12,37 +12,7 @@ namespace Orders.Test
             Code = "Test",
             Id = 1
         };
-        [Fact]
-        public void Test_Remove()
-        {
-            var context = new QuotationQueue();
-            var providerTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            var arrivedTime = DateTime.Now;
 
-            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(-1001))
-            {
-                Bid = 1
-            });
-            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(20))
-            {
-                Bid = 2
-            });
-
-            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(990))
-            {
-                Bid = 3
-            });
-            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(1020))
-            {
-                Bid = 4
-            });
-
-            context.Remove(1);
-
-            Assert.Equal(3, context.Count());
-
-
-        }
         [Fact]
         public void Test_GetQuotationsByMaxEndTime()
         {
@@ -102,6 +72,36 @@ namespace Orders.Test
             actual = context.GetQuotation(arrivedTime);
             Assert.NotNull(actual);
             Assert.Equal(actual.Bid, 1m);
+        }
+
+        [Fact]
+        public void Test_Remove()
+        {
+            var context = new QuotationQueue();
+            var providerTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            var arrivedTime = DateTime.Now;
+
+            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(-1001))
+            {
+                Bid = 1
+            });
+            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(20))
+            {
+                Bid = 2
+            });
+
+            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(990))
+            {
+                Bid = 3
+            });
+            context.Add(new Quotation(_symbol, providerTime, arrivedTime.AddMilliseconds(1020))
+            {
+                Bid = 4
+            });
+
+            context.Remove(1);
+
+            Assert.Equal(3, context.Count());
         }
 
         [Fact]

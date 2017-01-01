@@ -1,17 +1,54 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Concurrent;
+using Newtonsoft.Json;
+using Ornament.Domain.Entities;
+using Ornament.WebSockets;
 using Ornament.WebSockets.Collections;
+using Ornament.WebSockets.Handlers;
 
 namespace Orders.Notify
 {
-    public class UserWebSocketContainer : GroupWebSocketCollection
+    /// <summary>
+    /// 
+    /// </summary>
+    public class UserWebSocketContainer : AbstractWebSocketDictionary<string>
     {
-        public void SendTo<T>(string group, T objOfNotify)
+        internal WebSocketHandler Handler { get; set; }
+        ConcurrentDictionary<string, string> _socketIdUserMap = new ConcurrentDictionary<string, string>();
+        public void Add(OrnamentWebSocket socket, string user)
         {
-            WebSocketCollection<string> userSocketCollection;
+            this.AddIn(socket, user);
+            _socketIdUserMap.TryAdd(socket.Id, user);
+        }
 
-            if (TryGetGroup(group, out userSocketCollection))
+        public void Remove(OrnamentWebSocket socket)
+        {
+            string user;
+            if (_socketIdUserMap.TryGetValue(socket.Id, out user))
+                base.Remove(socket, user);
+        }
+    }
+
+    public static class SendingHelper
+    {
+        public static void SendTo<T>(this WebSocketHandler heandler, string group, T objOfNotify)
+        {
+            WebSocketCollection userSocketCollection;
+
+            if (heandler.Groups.TryGetGroup(group, out userSocketCollection))
             {
                 var s = JsonConvert.SerializeObject(objOfNotify);
+                foreach (var socketId in userSocketCollection.GetClients())
+                    socketId.SendTextAsnyc(s);
+            }
+        }
+
+        public static void SendTo<T>(this UserWebSocketContainer userContainer, string user, T objectNotify)
+        {
+            WebSocketCollection userSocketCollection;
+
+            if (userContainer.TryGetGroup(user, out userSocketCollection))
+            {
+                var s = JsonConvert.SerializeObject(objectNotify);
                 foreach (var socketId in userSocketCollection.GetClients())
                     socketId.SendTextAsnyc(s);
             }

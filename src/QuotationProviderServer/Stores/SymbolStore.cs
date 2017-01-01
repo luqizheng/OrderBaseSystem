@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Orders.Quotations;
 using Orders.Quotations.Stores;
 
@@ -157,19 +158,11 @@ namespace QuotationProviderServer.Stores
             }
         };
 
-        public IEnumerable<Symbol> Symbols
-        {
-            get { return symbols; }
-        }
+        public IEnumerable<Symbol> Symbols => symbols;
 
         public Symbol Get(int symbolId)
         {
-            foreach (var symbol in this.symbols)
-            {
-                if(symbol.Id==symbolId)
-                    return symbol;
-            }
-            return null;
+            return symbols.FirstOrDefault(symbol => symbol.Id == symbolId);
         }
     }
 }

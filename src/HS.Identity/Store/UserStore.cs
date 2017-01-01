@@ -96,7 +96,7 @@ namespace HS.Identity.Store
 
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult((DateTimeOffset?)null);
+            return Task.FromResult((DateTimeOffset?) null);
         }
 
         public Task SetLockoutEndDateAsync(User user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
@@ -173,7 +173,7 @@ namespace HS.Identity.Store
 
         public Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-             var user = new User
+            var user = new User
             {
                 Id = 1,
                 LoginId = "US",
@@ -263,9 +263,7 @@ namespace HS.Identity.Store
         {
             IList<string> result = new List<string>();
             if (user.LoginId == "111222")
-            {
                 result.Add("admin");
-            }
             return Task.FromResult(result);
         }
 
@@ -286,8 +284,6 @@ namespace HS.Identity.Store
 
         public Task<string> GetSecurityStampAsync(User user, CancellationToken cancellationToken)
         {
-
-
             //获取用户的安全戳
             return Task.FromResult(user.LoginId);
         }

@@ -5,13 +5,13 @@ var ACTION_DEFINED = {
 
 module.exports = {
     DEFINED: ACTION_DEFINED,
-    getChangeSymbol: function (symbol) {
+    getChangeSymbol: function(symbol) {
         return {
             type: ACTION_DEFINED.ChangeSymbol,
             symbol: symbol
         };
     },
-    getLoginAction: function (isLogin) {
+    getLoginAction: function(isLogin) {
         return {
             type: ACTION_DEFINED.Login,
             isLogin: isLogin

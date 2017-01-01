@@ -1,15 +1,13 @@
 ﻿
 var fs = require("fs");
-var path = require('path');
-var glob = require('glob');
+var path = require("path");
+var glob = require("glob");
 var rootPath = "./wwwroot/_src/";
-var scriptsLib = __dirname + "/wwwroot/lib/"
-
+var scriptsLib = __dirname + "/wwwroot/lib/";
 
 
 //var entry = getEntry(rootPath + "js/Views/**/*.js", rootPath + "js/");
-entry = rootPath + 'js/main.js'
-
+entry = rootPath + "js/main.js";
 module.exports = {
     entry: entry,
     devtool: "inline-source-map",
@@ -28,12 +26,12 @@ module.exports = {
             "jq-form": scriptsLib + "jquery-form/jquery.form.js",
             "jq-val-uo": scriptsLib + "jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
             "jq-val": scriptsLib + "jquery-validation/dist/jquery.validate.js",
-            "jarvis":scriptsLib+"smartAdmin/smartwidgets/jarvis.widget.js"
+            "jarvis": scriptsLib + "smartAdmin/smartwidgets/jarvis.widget.js"
         }
     },
     module: {
         loaders: [
-            { test: /\.ts$/, loader: 'ts-loader' },
+            { test: /\.ts$/, loader: "ts-loader" },
             {
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 loader: "url-loader?limit=10000&mimetype=application/font-woff"
@@ -52,22 +50,19 @@ module.exports = {
                 test: /\.ts$/,
                 loader: "tslint-loader"
             },
-
             {
                 test: /\.js$/,
-                exclude: [/node_modules/,/lib/],
-                loader: 'jshint-loader'
+                exclude: [/node_modules/, /lib/],
+                loader: "jshint-loader"
 
             }
-
-
         ]
     },
     plugins: [],
     externals: {
-        'jquery': 'jQuery',
-        '$': 'jquery',
-        'avalon': 'avalon'
+        'jquery': "jQuery",
+        '$': "jquery",
+        'avalon': "avalon"
 
     }
 };
@@ -75,11 +70,15 @@ module.exports = {
 function getEntry(globPath, pathDir) {
     var files = glob.sync(globPath);
     var entries = {},
-        entry, dirname, basename, pathname, extname;
+        entry,
+        dirname,
+        basename,
+        pathname,
+        extname;
 
     for (var i = 0; i < files.length; i++) {
 
-        entry = files[i]
+        entry = files[i];
 
         /*
         dirname = path.dirname(entry).replace(/\//g, "/");;
@@ -89,7 +88,7 @@ function getEntry(globPath, pathDir) {
         pathname = pathDir ? pathname.replace(new RegExp('^' + pathDir), '') : pathname;
         */
 
-        pathname = entry.replace(new RegExp('^' + pathDir), '');
+        pathname = entry.replace(new RegExp("^" + pathDir), "");
         entries[pathname] = entry;
 
     }

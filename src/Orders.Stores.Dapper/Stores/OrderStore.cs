@@ -116,12 +116,12 @@ namespace Orders.Stores
                 OddsRate = order.Game.Rate,
                 OpenTime = order.OpenInfo.OpenPrice.ArrivedTime,
                 OpenPrice = order.OpenInfo.OpenPrice.Bid,
-                CloseTime = (DateTime?)null,
+                CloseTime = (DateTime?) null,
                 ClosePrice = 0,
                 SL = 0,
                 TP = 0,
                 Profit = 0,
-                Status = (int)order.Status,
+                Status = (int) order.Status,
                 Commission = 0,
                 Interest = 0,
                 IsClosed = 0,
@@ -134,9 +134,9 @@ namespace Orders.Stores
                 CreateTime = DateTime.Now,
                 boInterval = order.Game.Cycle,
                 boPercent = order.Game.Rate,
-                OrgOpenTime = (DateTime?)null,
-                OrgOpenPrice = order.OpenInfo.OpenPrice.Adjusted ? order.OpenInfo.OpenPrice.SrcBid : (decimal?)null,
-                OrgCloseTime = (DateTime?)null,
+                OrgOpenTime = (DateTime?) null,
+                OrgOpenPrice = order.OpenInfo.OpenPrice.Adjusted ? order.OpenInfo.OpenPrice.SrcBid : (decimal?) null,
+                OrgCloseTime = (DateTime?) null,
                 OrgClosePrice = 0m,
                 OrgProfit = 0m,
                 IsOpenPloyProcessed = 0,
@@ -186,7 +186,7 @@ from TB_BIZ_Trades where Account=@user and CMD in (0,1)";
                     order.OpenInfo.OpenPrice = openInfo.OpenPrice;
                     order.OpenInfo.ClientPostTime = openInfo.ClientPostTime;
                     return order;
-                }, new { user });
+                }, new {user});
         }
 
         public int? GetLastOrderId(IOrderIdGenerator idGenerator)
@@ -205,10 +205,9 @@ OrgCloseTime =@OrgCloseTime, OrgClosePrice = @OrgClosePrice,Profit=@Profit where
                 id = order.Id,
                 OrgCloseTime = order.CloseInfo.CompleteTime,
                 OrgClosePrice =
-                 order.CloseInfo.Price.Adjusted ? order.CloseInfo.Price.SrcBid : order.CloseInfo.Price.Bid,
+                order.CloseInfo.Price.Adjusted ? order.CloseInfo.Price.SrcBid : order.CloseInfo.Price.Bid,
                 order.Profit
             }).Result;
-
         }
 
 

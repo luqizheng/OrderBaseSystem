@@ -17,7 +17,8 @@ namespace Orders.Notify
         {
             var services = builder.Services;
             services.AddScoped<UserWebSocketContainer>();
-            services.AddSingleton(typeof(IOrderNotify), typeof(WebSocketOrderNotify));
+            services.AddSingleton(typeof(IOrderNotify),
+                sp => new WebSocketOrderNotify(sp.GetService<UserWebSocketContainer>()));
             return builder;
         }
 
@@ -33,18 +34,29 @@ namespace Orders.Notify
             app.UseOrnamentWebSocket(setting =>
             {
                 var handler = setting.AddText(url);
+                var userContainer = app.ApplicationServices.GetService<UserWebSocketContainer>();
+                userContainer.Handler = handler;
+
                 handler.OnConnecting = (socket, http, manager) =>
                 {
+                    if (!http.User.Identity.IsAuthenticated)
+                        throw new IllegeAccessException();
                     var isAdmin = funcIsAdmin(http);
-                    app.ApplicationServices.GetService<UserWebSocketContainer>()
+                    handler.Groups
                         .Add(socket,
-                        isAdmin ? WebSocketOrderNotify.AdminGroup : WebSocketOrderNotify.DefaultGroup);
+                            isAdmin ? WebSocketOrderNotify.AdminGroup : WebSocketOrderNotify.DefaultGroup);
+
+
+                    userContainer.Add(socket, http.User.Identity.Name);
                 };
 
                 handler.OnClosed = (socket, http, manager) =>
                 {
-                    app.ApplicationServices.GetService<UserWebSocketContainer>()
-                        .Remove(socket);
+                    if (http.User.Identity.IsAuthenticated)
+                    {
+                        userContainer.Remove(socket);
+                        handler.Groups.Remove(socket);
+                    }
                 };
             });
             return app;

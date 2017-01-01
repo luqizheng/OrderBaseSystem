@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Orders.Quotations;
 using Orders.Quotations.Providers;
 using Orders.Quotations.Stores;
@@ -14,18 +13,14 @@ namespace Orders.System.Demo
         {
             services.AddSingleton(typeof(ISymbolStore), typeof(DemoSymbloStore));
             services.AddSingleton(typeof(IOrderStore), typeof(DemoOrderStore));
-
         }
 
-        public static QuotationServiceBuilder AddDemoQuotationProvider(this QuotationServiceBuilder quotationServiceBuilder)
+        public static QuotationServiceBuilder AddDemoQuotationProvider(
+            this QuotationServiceBuilder quotationServiceBuilder)
         {
             quotationServiceBuilder.Services.AddSingleton(typeof(QuotationProvider),
                 typeof(DemoQuotationProvider));
             return quotationServiceBuilder;
         }
-
-   
-
-
     }
 }

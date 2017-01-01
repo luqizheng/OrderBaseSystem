@@ -6,13 +6,11 @@ namespace Orders
     {
         public OrderCreatingException(string error) : base(error)
         {
-
         }
 
         public OrderCreatingException(string error, Exception innerException)
             : base(error, innerException)
         {
-
         }
 
         public override string Message
@@ -20,13 +18,9 @@ namespace Orders
             get
             {
                 if (InnerException != null)
-                {
                     return base.Message + "." + InnerException.Message;
-                }
                 return base.Message;
             }
         }
     }
-
-
 }

@@ -26,8 +26,6 @@ namespace Orders.Policy.PricePolicies
 
 
             return context.TryGetQuotation(game.Symbol.Id, startDateTime, out price);
-
-
         }
     }
 }

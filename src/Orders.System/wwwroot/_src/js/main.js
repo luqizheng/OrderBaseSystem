@@ -1,9 +1,9 @@
 ﻿/// <reference path="modules/ctrl/loginctrl.js" />
 /// <reference path="modules/services/symbolservice.js" />
 /// <reference path="modules/ctrl/symbolctrl.js" />
-/// <reference path="../../../node_modules/redux/dist/redux.js"/>
-/// <reference path="modules/ctrl/reduxAction.js"/>
-var avalon = require('avalon');
+/// <reference path="../../../node_modules/redux/dist/redux.js" />
+/// <reference path="modules/ctrl/reduxAction.js" />
+var avalon = require("avalon");
 var symbolService = require("./modules/services/symbolservice.js");
 var Redux = require("../../../node_modules/redux/dist/redux");
 var ReduxActionDefined = require("./modules/ctrl/reduxAction.js");
@@ -12,35 +12,39 @@ var modules = {
     symbol: null,
     order: null
 };
+
 function CreateGlobalStore(inverstmentCtrl) {
     //http://cn.redux.js.org/docs/introduction/ThreePrinciples.html
     var globalState = {
         currentSymbolId: 0,
         isLogin: false
     };
+
     function globalReduce(state, action) {
-        if (typeof state === 'undefined') {
+        if (typeof state === "undefined") {
             state = globalState;
         }
         switch (action.type) {
-            case ReduxActionDefined.DEFINED.ChangeSymbol:
-                console.log('change to ', action.symbol);
-                inverstmentCtrl.setSymbol(action.symbol);
-                break;
-            case ReduxActionDefined.DEFINED.Login:
-                console.log("start quotation substribe.");
-                modules.symol.StartQuotationProvider();
-                modules.order.Start();
-                break;
-            case ReduxActionDefined.DEFINED.Logout:
-                break;
-            default:
-                return state;
+        case ReduxActionDefined.DEFINED.ChangeSymbol:
+            console.log("change to ", action.symbol);
+            inverstmentCtrl.setSymbol(action.symbol);
+            break;
+        case ReduxActionDefined.DEFINED.Login:
+            console.log("start quotation substribe.");
+            modules.symol.StartQuotationProvider();
+            modules.order.Start();
+            break;
+        case ReduxActionDefined.DEFINED.Logout:
+            break;
+        default:
+            return state;
         }
     }
+
     var symbolStore = Redux.createStore(globalReduce);
     return symbolStore;
 }
+
 function init() {
 
     //初始化购买面版

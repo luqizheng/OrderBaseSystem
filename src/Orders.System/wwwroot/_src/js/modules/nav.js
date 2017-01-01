@@ -1,8 +1,7 @@
 ﻿/// <reference path="../views/areas/membership/user/index.js" />
-var $ = require('jquery');
+var $ = require("jquery");
 var page = require("../../../lib/page/page.js");
 var $content; //loading-page-element;
-
 
 
 function ContentLoad(ctx, onEntry) {
@@ -10,13 +9,14 @@ function ContentLoad(ctx, onEntry) {
     var loading = location.pathname.toUpperCase() != strUrl.toUpperCase();
     var bIsFunc = $.isFunction(onEntry);
     if (loading) {
-        $content.load(strUrl, function (responseText, textStatus, req) {
-            if (req.status != 200) {
-                $content.html(responseText);
-                return;
-            }
-            bIsFunc && onEntry.call(this, $content[0]);
-        });
+        $content.load(strUrl,
+            function(responseText, textStatus, req) {
+                if (req.status != 200) {
+                    $content.html(responseText);
+                    return;
+                }
+                bIsFunc && onEntry.call(this, $content[0]);
+            });
     } else if ($.isFunction(onEntry)) {
         bIsFunc && onEntry.call(this, $content[0]);
     }
@@ -26,35 +26,37 @@ function ContentLoad(ctx, onEntry) {
 function AddPath(pathes, onEntry, onLeave) {
 
     var pa = $.makeArray(pathes);
-    $(pa).each(function () {
-        AddSinglePath(this, onEntry, onLeave);
-    })
-
+    $(pa)
+        .each(function() {
+            AddSinglePath(this, onEntry, onLeave);
+        });
 }
 
 function AddSinglePath(pathes, onEntry, onLeave) {
-    page(pathes, function (ctx) {
-        ContentLoad(ctx, onEntry);
-    });
+    page(pathes,
+        function(ctx) {
+            ContentLoad(ctx, onEntry);
+        });
 
     if ($.isFunction(onLeave)) {
-        page.exit(pathes, function (ctx, next) {
-            try {
-                onLeave($content);
-            } catch (e) {
-                console.log('on leavel ', pathes, 'failed.', e);
-            }
-            next();
-        });
+        page.exit(pathes,
+            function(ctx, next) {
+                try {
+                    onLeave($content);
+                } catch (e) {
+                    console.log("on leavel ", pathes, "failed.", e);
+                }
+                next();
+            });
     }
 }
 
 module.exports = {
-    add: AddPath,//添加nav导航的设置
-    startNav: function ($ajaxLoadContent) { //开始初始化导航的体系
-        $content = $ajaxLoadContent
+    add: AddPath, //添加nav导航的设置
+    startNav: function($ajaxLoadContent) { //开始初始化导航的体系
+        $content = $ajaxLoadContent;
         AddPath("/");
         page();
     },
 
-}
+};

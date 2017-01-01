@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using Ornament.Stores;
-using Ornament.Uow;
 
 namespace Orders.Quotations.Stores
 {
@@ -13,13 +12,10 @@ namespace Orders.Quotations.Stores
         {
         }
 
-      
+
         public override IQueryable<ChartInfo> Entities
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { throw new NotImplementedException(); }
         }
 
         public IEnumerable<ChartInfo> List(ChartInfoType type, Symbol symbol, DateTime? start, DateTime? end)

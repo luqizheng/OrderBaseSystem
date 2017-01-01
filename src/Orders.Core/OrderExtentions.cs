@@ -7,7 +7,6 @@ namespace Orders
     public static class OrderExtentions
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="services"></param>
         /// <param name="enableCloseService">启动这个配置之后，要确保订单会发送到其他地方进行平仓</param>

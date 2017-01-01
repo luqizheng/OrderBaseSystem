@@ -3,11 +3,12 @@
 /// <reference path="../services/userservice.js" />
 
 var Users = require("../services/userservice.js");
-var Avalon = require('avalon');
+var Avalon = require("avalon");
 var AccountService = new Users.AccountService();
 var ReduxAction = require("./reduxAction.js");
+
 function init(globalStore) {
-    
+
     var vm = Avalon.define({
         $id: "loginCtrl",
         user: {
@@ -16,12 +17,12 @@ function init(globalStore) {
             name: "",
             isLogin: false
         },
-        login: function (e) {       
+        login: function(e) {
             e.preventDefault();
             e.stopPropagation();
             console.log("login....");
             AccountService.login(vm.user.loginId, vm.user.password)
-                .done(function (data) {
+                .done(function(data) {
 
                     console.log(data);
                     if (data.success) {

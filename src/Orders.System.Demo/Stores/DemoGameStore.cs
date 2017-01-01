@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Orders.Games;
 using Orders.Quotations;
 using Orders.Stores;
@@ -15,7 +14,6 @@ namespace Orders.System.Demo.Stores
                 Cycle = 1,
                 Name = "1分钟",
                 Rate = 0.92m,
-
                 Id = 1
             };
         }

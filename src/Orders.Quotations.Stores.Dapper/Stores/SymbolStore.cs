@@ -4,7 +4,6 @@ using System.Linq;
 using Dapper;
 using Ornament;
 using Ornament.Stores;
-using Ornament.Uow;
 
 namespace Orders.Quotations.Stores
 {
@@ -29,6 +28,24 @@ namespace Orders.Quotations.Stores
             }
         }
 
+        public override Symbol Get(int symbolId)
+        {
+            var q =
+                "select Id,Name,Symbol as Code,DotDigit Sclar,BoInterval from TB_Biz_Symbols where Status=1 and id=@id";
+            var result = Uow.Connection.QuerySingle<Symbol>(q, new {id = symbolId});
+            //test trading session
+            foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                result.TradingSession.Add(day, new List<TimePeriod>
+                {
+                    new TimePeriod
+                    {
+                        Start = new Time(),
+                        End = new Time(23, 59, 59, 0)
+                    }
+                });
+            return result;
+        }
+
 
         public override void Update(Symbol t)
         {
@@ -44,25 +61,5 @@ namespace Orders.Quotations.Stores
         {
             throw new NotImplementedException();
         }
-
-        public override Symbol Get(int symbolId)
-        {
-            var q =
-                "select Id,Name,Symbol as Code,DotDigit Sclar,BoInterval from TB_Biz_Symbols where Status=1 and id=@id";
-            var result = Uow.Connection.QuerySingle<Symbol>(q, new { id = symbolId });
-            //test trading session
-            foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
-                result.TradingSession.Add(day, new List<TimePeriod>
-                {
-                    new TimePeriod
-                    {
-                        Start = new Time(),
-                        End = new Time(23, 59, 59, 0)
-                    }
-                });
-            return result;
-        }
-
-
     }
 }
