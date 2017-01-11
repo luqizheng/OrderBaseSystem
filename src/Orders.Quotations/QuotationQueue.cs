@@ -46,7 +46,12 @@ namespace Orders.Quotations
         {
             return _list.GetEnumerator();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datetime"></param>
+        /// <returns>输入时间没有匹配任何报价返回null</returns>
+      
         public Quotation GetQuotation(DateTime datetime)
         {
             if (!_list.Any())

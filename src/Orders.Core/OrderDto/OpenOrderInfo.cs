@@ -27,8 +27,10 @@ namespace Orders
         ///     客户端millsisonds
         /// </summary>
         public DateTime? ClientPostTime { get; set; }
-
-        public double RemindSeconds
+        /// <summary>
+        /// 
+        /// </summary>
+        public double TransportSeconds
         {
             get
             {

@@ -13,10 +13,6 @@ namespace Orders.Quotations.Stores
         }
 
 
-        public override IQueryable<ChartInfo> Entities
-        {
-            get { throw new NotImplementedException(); }
-        }
 
         public IEnumerable<ChartInfo> List(ChartInfoType type, Symbol symbol, DateTime? start, DateTime? end)
         {
@@ -36,24 +32,6 @@ namespace Orders.Quotations.Stores
             return dbData;
         }
 
-        public override void Update(ChartInfo t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Add(ChartInfo t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(ChartInfo t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ChartInfo Get(int id)
-        {
-            throw new NotImplementedException();
-        }
+ 
     }
 }

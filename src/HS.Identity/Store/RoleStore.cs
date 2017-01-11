@@ -14,9 +14,7 @@ namespace HS.Identity.Store
         {
         }
 
-        public override IQueryable<Role> Entities { get; }
-
-
+       
         public Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
@@ -68,24 +66,6 @@ namespace HS.Identity.Store
             throw new NotImplementedException();
         }
 
-        public override void Update(Role t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Add(Role t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(Role t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Role Get(int id)
-        {
-            throw new NotImplementedException();
-        }
+ 
     }
 }

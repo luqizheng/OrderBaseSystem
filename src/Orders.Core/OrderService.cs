@@ -40,6 +40,7 @@ namespace Orders
             if (generator == null) throw new ArgumentNullException(nameof(generator));
             if (notify == null) throw new ArgumentNullException(nameof(notify));
             if (logger == null) throw new ArgumentNullException(nameof(logger));
+            
             _orderContext = orderContext;
             _qutationContext = qutationContext;
             _orderStore = orderStore;
@@ -144,7 +145,8 @@ namespace Orders
 
             if (DefaultOpenOpenPricePolicy.TryGetPrice(_qutationContext, openOrderInfo, game, out openPrice))
                 return openPrice;
-            throw new OrderCreatingException(DefaultOpenOpenPricePolicy.Message);
+
+            throw new OrderException("暂时无报价，请联系管理员.");
         }
     }
 }

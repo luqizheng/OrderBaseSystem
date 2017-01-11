@@ -23,9 +23,9 @@ namespace Orders.Test
             var queuenew = new UncloseOrderQueue();
             for (var i = 0; i < 10; i++)
             {
-                var order = new Order
+                var order = new Order(10, Direction.Down, "123=-test")
                 {
-                    User = "123=-test",
+
                     Id = (i + 1).ToString()
                 };
                 var game = new Game("Test", _symbol)

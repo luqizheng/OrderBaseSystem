@@ -9,5 +9,7 @@ namespace Orders.Stores
         Game Get(int gameId);
 
         IEnumerable<Game> List(Symbol symbol);
+
+
     }
 }

@@ -75,13 +75,15 @@ namespace Order.System
                 .AddWebSocketPublisher(); //添加推送的报价
 
             //order设置
-            services.AddOrderService(true)
+            services.AddOrderService(true,"OrderServer1-1")
                 .AddOrderStoreDapper(Configuration.GetConnectionString("Conn_Local")) //保存
                 .AddOrderNotify();
 
 
             //demo setting;
             //services.AddDemoQuotationStore();
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,9 +13,9 @@ namespace Orders.Stores
         {
         }
 
-        public override IQueryable<Game> Entities { get; }
+    
 
-        public override Game Get(int gameId)
+        public Game Get(int gameId)
         {
             return new Game("1分钟", new Symbol {Id = 1})
             {
@@ -38,19 +38,6 @@ namespace Orders.Stores
             };
         }
 
-        public override void Update(Game t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Add(Game t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(Game t)
-        {
-            throw new NotImplementedException();
-        }
+   
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Orders.Stores;
+using Ornament.Domain.Stores;
+using Ornament.Domain.Uow;
 
 namespace Orders.System.Demo.Stores
 {
@@ -37,6 +39,11 @@ namespace Orders.System.Demo.Stores
             throw new NotImplementedException();
         }
 
+        public int? GetLastOrderId(string serverName)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -62,6 +69,8 @@ namespace Orders.System.Demo.Stores
             throw new NotImplementedException();
         }
 
+   
+
         public IQueryable<Order> Entities { get; }
 
         public IEnumerable<Order> GetUncloseOrders(DateTime closeTime)
@@ -73,5 +82,7 @@ namespace Orders.System.Demo.Stores
         {
             throw new NotImplementedException();
         }
+
+        public IUnitOfWork Uow { get; }
     }
 }

@@ -6,9 +6,15 @@ namespace Orders.Policy.PricePolicies
 {
     public class BestPriceOpenPricePolicy : IOpenPricePolicy
     {
+        public BestPriceOpenPricePolicy()
+        {
+            this.Priority=1;
+        }
         /// <summary>
         /// </summary>
-        public int Priority { get; } = 1;
+        public int Priority { get; }
+
+        public string Type{get{return "best";}}
 
         /// <summary>
         /// </summary>

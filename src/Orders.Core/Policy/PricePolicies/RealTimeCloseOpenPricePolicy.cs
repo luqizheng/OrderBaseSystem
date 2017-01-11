@@ -5,6 +5,10 @@ namespace Orders.Policy.PricePolicies
 {
     public class RealTimeCloseOpenPricePolicy : IClosePricePolicy
     {
+        public RealTimeCloseOpenPricePolicy()
+        {
+            this.Priority=99;
+        }
         public int Priority { get; set; }
 
         public bool TryGetPrice(QuotationContext context, Order order, out Quotation price)

@@ -24,11 +24,6 @@ namespace HS.Identity.Store
         {
         }
 
-        public override IQueryable<User> Entities
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public IQueryable<User> Users { get; }
 
         public Task<IList<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken)
@@ -288,24 +283,6 @@ namespace HS.Identity.Store
             return Task.FromResult(user.LoginId);
         }
 
-        public override void Update(User t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Add(User t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(User t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override User Get(int id)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

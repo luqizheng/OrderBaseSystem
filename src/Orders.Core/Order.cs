@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Orders.Games;
 using Orders.Quotations;
 
@@ -10,7 +12,7 @@ namespace Orders
     {
         /// <summary>
         /// </summary>
-        public Order()
+        protected Order()
         {
             CreateTime = DateTime.Now;
             Status = OrderStatus.Created;
@@ -59,11 +61,12 @@ namespace Orders
 
         /// <summary>
         /// </summary>
+        [Key]
         public virtual string Id { get; set; }
 
         /// <summary>
         /// </summary>
-        public virtual string User { get; set; }
+        public virtual string User { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -94,15 +97,13 @@ namespace Orders
         {
             if (openPrice == null)
                 throw new ArgumentNullException(nameof(openPrice));
-            if (game == null) throw new ArgumentNullException(nameof(game));
-            if (User == null)
-                throw new OrderCreatingException("User can't be null.");
-
+            if (game == null)
+                throw new ArgumentNullException(nameof(game));
             if (game.Symbol == null)
-                throw new OrderCreatingException("Game can't be null.");
+                throw new ArgumentException("Game can't be null.");
             Game = game;
             ConfirmDateTime = DateTime.Now;
-            OpenInfo.OpenPrice = openPrice;
+            OpenInfo.Price = openPrice;
             CloseTime = Game.GetCloseTime(openPrice.ArrivedTime.DateTime);
             Status = OrderStatus.Opening;
         }
@@ -119,36 +120,38 @@ namespace Orders
             CloseInfo.CompleteTime = DateTime.Now;
             Status = OrderStatus.Completed;
 
-            if (closePrice == OpenInfo.OpenPrice)
+            if (closePrice == OpenInfo.Price)
                 Profit = 0;
-            else if (closePrice.Bid > OpenInfo.OpenPrice.Bid)
-                Profit = Direction == Direction.Down ? -Volume : Volume*Game.Rate;
+            else if (closePrice.Bid > OpenInfo.Price.Bid)
+                Profit = Direction == Direction.Down ? -Volume : Volume * Game.Rate;
             else
-                Profit = Direction == Direction.Up ? -Volume : Volume*Game.Rate;
+                Profit = Direction == Direction.Up ? -Volume : Volume * Game.Rate;
         }
 
         /// <summary>
         /// </summary>
+        [ComplexType]
         public class OpenOrderInformation
         {
-            public Quotation OpenPrice { get; set; }
+            public Quotation Price { get; internal set; }
 
-            public DateTime? ClientPostTime { get; set; }
+            public DateTime? ClientPostTime { get; internal set; }
         }
 
         /// <summary>
         /// </summary>
+        [ComplexType]
         public class CloseOrderInformation
         {
             /// <summary>
             ///     价格信息
             /// </summary>
-            public Quotation Price { get; set; }
+            public Quotation Price { get; internal set; }
 
             /// <summary>
             ///     执行平仓的时间。
             /// </summary>
-            public DateTime CompleteTime { get; set; }
+            public DateTime CompleteTime { get; internal set; }
         }
     }
 }

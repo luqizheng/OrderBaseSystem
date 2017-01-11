@@ -1,11 +1,13 @@
 {
   "version": "1.0.0-*",
-
+  "buildOptions": {
+    "debugType": "portable"
+  },
   "dependencies": {
     "Dapper": "1.50.2",
     "NETStandard.Library": "1.6.1",
     "Orders.Quotations": "1.0.0-*",
-    "Ornament.Uow.DbConnection": "1.1.0"
+    "Ornament.Uow.DbConnection": "1.1.2"
   },
 
   "frameworks": {

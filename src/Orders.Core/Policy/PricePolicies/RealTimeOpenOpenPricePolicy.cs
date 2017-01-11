@@ -9,13 +9,17 @@ namespace Orders.Policy.PricePolicies
     /// </summary>
     public class RealTimeOpenPricePolicy : IOpenPricePolicy
     {
-        /// <summary>
-        /// </summary>
-        public int Priority { get; } = 0;
+        public RealTimeOpenPricePolicy()
+        {
+            this.Priority = 99;
+        }
 
         /// <summary>
         /// </summary>
-        public string Message => "暂时无报价，请联系管理员.";
+        public int Priority { get; }
+
+
+        public string Type => "realtime";
 
 
         public bool TryGetPrice(QuotationContext context, OpenOrderInfo openOrder, Game game, out Quotation price)

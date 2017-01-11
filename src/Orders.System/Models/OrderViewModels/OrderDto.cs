@@ -9,8 +9,8 @@ namespace Order.System.Models.OrderViewModels
             Id = order.Id;
             ClosePrice = order.CloseInfo.Price.Bid;
             CloseTime = order.CloseTime;
-            OpenPrice = order.OpenInfo.OpenPrice.Bid;
-            OpenTime = order.OpenInfo.OpenPrice.ArrivedTime.ToString("yyyy-MM-dd HH:mm:ss");
+            OpenPrice = order.OpenInfo.Price.Bid;
+            OpenTime = order.OpenInfo.Price.ArrivedTime.ToString("yyyy-MM-dd HH:mm:ss");
             Status = order.Status.ToString();
         }
 

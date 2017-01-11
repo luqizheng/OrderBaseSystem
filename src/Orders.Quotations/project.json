@@ -1,13 +1,15 @@
 {
   "version": "1.0.0-*",
-
+  "buildOptions": {
+    "debugType": "portable"
+  },
   "dependencies": {
     "NETStandard.Library": "1.6.1",
     "Ornament": "1.0.2",
     "System.Linq": "4.3.0",
     "System.Collections.Concurrent": "4.3.0",
     "System.ComponentModel.Annotations": "4.3.0",
-    "Ornament.Domain": "1.0.2"
+    "Ornament.Domain": "1.0.3"
   },
 
   "frameworks": {

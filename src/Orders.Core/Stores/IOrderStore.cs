@@ -3,16 +3,16 @@ using Ornament.Domain.Stores;
 
 namespace Orders.Stores
 {
-    public interface IOrderStore : IStore<Order, int>
+    public interface IOrderStore
     {
         Order GetLastOrder(string user, int symbol);
 
-        Order GetLastOrder(string user);
-
-        Order GetLastOrder();
         IEnumerable<Order> GetUncloseOrders(string user);
 
-        int? GetLastOrderId(IOrderIdGenerator idGenerator);
         void Close(Order order);
+
+        int? GetLastOrderId(string serverName);
+
+        void Add(Order order);
     }
 }

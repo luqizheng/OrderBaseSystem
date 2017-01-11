@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.Common;
 using Dapper;
 using Orders.Quotations;
 using Ornament.Stores;
@@ -9,18 +9,22 @@ namespace Orders.Stores
 {
     public class OrderStore : DbConnectionStore<Order, string>, IOrderStore
     {
-        public OrderStore(OrderUow context) : base(context)
+        private readonly OrderServiceBuilder _serverBuilder;
+
+        public OrderStore(OrderUow context, OrderServiceBuilder serverBuilder) : base(context)
         {
+            _serverBuilder = serverBuilder;
         }
 
-        public Order Get(int id)
+        public int? GetLastOrderId(string serverName)
         {
-            throw new NotImplementedException();
+            var sql = "select MAX(MTOrder) from [TB_Biz_Trades] a where a.TradeServer=@serverName";
+
+            return Uow.Connection.ExecuteScalar<int?>(sql, new {serverName});
         }
 
-        public override IQueryable<Order> Entities { get; }
 
-        public override void Add(Order order)
+        public void Add(Order order)
         {
             var sql = @"
             INSERT INTO[dbo].[TB_Biz_Trades]
@@ -114,8 +118,8 @@ namespace Orders.Stores
                 VolumeSell = order.Direction == Direction.Up ? order.Volume : 0,
                 order.Volume,
                 OddsRate = order.Game.Rate,
-                OpenTime = order.OpenInfo.OpenPrice.ArrivedTime,
-                OpenPrice = order.OpenInfo.OpenPrice.Bid,
+                OpenTime = order.OpenInfo.Price.ArrivedTime,
+                OpenPrice = order.OpenInfo.Price.Bid,
                 CloseTime = (DateTime?) null,
                 ClosePrice = 0,
                 SL = 0,
@@ -129,94 +133,55 @@ namespace Orders.Stores
                 IsCreditTrade = 0,
                 FromOrder = 0,
                 Comment = 0,
-                BizDay = Convert.ToInt32(order.OpenInfo.OpenPrice.ArrivedTime.ToString("yyyyMMdd")),
+                BizDay = Convert.ToInt32(order.OpenInfo.Price.ArrivedTime.ToString("yyyyMMdd")),
                 UpdateTime = DateTime.Now,
                 CreateTime = DateTime.Now,
                 boInterval = order.Game.Cycle,
                 boPercent = order.Game.Rate,
                 OrgOpenTime = (DateTime?) null,
-                OrgOpenPrice = order.OpenInfo.OpenPrice.Adjusted ? order.OpenInfo.OpenPrice.SrcBid : (decimal?) null,
+                OrgOpenPrice = order.OpenInfo.Price.Adjusted ? order.OpenInfo.Price.SrcBid : (decimal?) null,
                 OrgCloseTime = (DateTime?) null,
                 OrgClosePrice = 0m,
                 OrgProfit = 0m,
                 IsOpenPloyProcessed = 0,
                 IsClosePloyProcessed = 0,
-                IsOpenPloyProce = order.OpenInfo.OpenPrice.SrcBid != 0m,
+                IsOpenPloyProce = order.OpenInfo.Price.SrcBid != 0m,
                 IsClosePloyProc = 0,
                 TradeTerminal = 0,
                 OrderGUID = Guid.NewGuid().ToString("N"),
-                CommissionAgent = 0m
+                CommissionAgent = 0m,
+                TradeServer = _serverBuilder.ServerName
             };
-
-            Uow.Connection.Execute(sql, inserObject);
+            ((DbConnection) Uow.Connection).Execute(sql, inserObject);
         }
 
-        public override void Update(Order t)
-        {
-        }
 
         public Order GetLastOrder(string user, int symbol)
         {
             throw new NotImplementedException();
         }
 
-        public Order GetLastOrder(string user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Order GetLastOrder()
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<Order> GetUncloseOrders(string user)
         {
-            //TODO no finish
-            var sql = @"select MTOrder Id,  Account User, CMD Direction,
-from TB_BIZ_Trades where Account=@user and CMD in (0,1)";
-
-            return Uow.Connection.Query<Order.OpenOrderInformation,
-                Order.CloseOrderInformation, Order, Order>(sql,
-                (openInfo, closeInfo, order) =>
-                {
-                    order.CloseInfo.CompleteTime = closeInfo.CompleteTime;
-                    order.CloseInfo.Price = closeInfo.Price;
-
-                    order.OpenInfo.OpenPrice = openInfo.OpenPrice;
-                    order.OpenInfo.ClientPostTime = openInfo.ClientPostTime;
-                    return order;
-                }, new {user});
-        }
-
-        public int? GetLastOrderId(IOrderIdGenerator idGenerator)
-        {
-            var sql = "select MAX(MTOrder) from [TB_Biz_Trades]";
-            return Uow.Connection.ExecuteScalar<int?>(sql);
+            throw new NotImplementedException();
         }
 
         public void Close(Order order)
         {
-            var sql = @"update TB_biz_trades set isClosed=1,CloseTime=@closeTime, 
-OrgCloseTime =@OrgCloseTime, OrgClosePrice = @OrgClosePrice,Profit=@Profit where MTOrder=@id";
-            var task = Uow.Connection.ExecuteAsync(sql, new
+            var sql = @"update tb_biz_trades set CloseTime=@closeTime,Profit=@profit
+,OrgClosePrice=@OrgClosePrice,OrgClosePrice=@OrgClosePrice wehre id=@id ";
+            var task = ((DbConnection) Uow.Connection).Execute(sql, new
             {
                 closeTime = order.CloseTime,
                 id = order.Id,
-                OrgCloseTime = order.CloseInfo.CompleteTime,
                 OrgClosePrice =
                 order.CloseInfo.Price.Adjusted ? order.CloseInfo.Price.SrcBid : order.CloseInfo.Price.Bid,
                 order.Profit
-            }).Result;
+            });
         }
 
-
-        public override void Delete(Order t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Order Get(string id)
+        public Order Get(int id)
         {
             throw new NotImplementedException();
         }

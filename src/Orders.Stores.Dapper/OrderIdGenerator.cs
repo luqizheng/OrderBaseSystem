@@ -1,22 +1,23 @@
-﻿using Orders.Stores;
-
-namespace Orders
+﻿namespace Orders
 {
     public class OrderIdGenerator : IOrderIdGenerator
     {
-        private readonly object lockItem = new object();
+        private readonly object _lockItem = new object();
+
+
         private int _currentId;
 
-        public OrderIdGenerator(IOrderStore store)
+        public OrderIdGenerator(int currentId)
         {
-            _currentId = store.GetLastOrderId(this) ?? 0;
+            _currentId = currentId;
         }
 
         public string CurrentId => _currentId.ToString();
 
+
         public string Next()
         {
-            lock (lockItem)
+            lock (_lockItem)
             {
                 _currentId++;
                 return _currentId.ToString();

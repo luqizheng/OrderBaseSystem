@@ -12,7 +12,7 @@ namespace Orders
         /// <param name="enableCloseService">启动这个配置之后，要确保订单会发送到其他地方进行平仓</param>
         /// <returns></returns>
         public static OrderServiceBuilder
-            AddOrderService(this IServiceCollection services, bool enableCloseService)
+            AddOrderService(this IServiceCollection services, bool enableCloseService, string serverName)
         {
             services.AddSingleton<OrderContext>();
             services.AddScoped(typeof(OrderService));
@@ -23,7 +23,7 @@ namespace Orders
                 return new OrderNotifyManager(notifies);
             });
 
-            var result = new OrderServiceBuilder(services, true, enableCloseService);
+            var result = new OrderServiceBuilder(services, true, enableCloseService, serverName);
 
             services.AddSingleton(result);
             return result;

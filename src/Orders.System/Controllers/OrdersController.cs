@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Order.System.Models.OrderViewModels;
@@ -30,6 +31,7 @@ namespace Order.System.Controllers
 
         // POST api/values
         [HttpPost]
+        [Authorize]
         public OrderCreatedResult Post([FromBody] OrderCreatingInfo value)
         {
             var game = _gameStore.Get(value.GameId);
@@ -44,14 +46,14 @@ namespace Order.System.Controllers
                 Volume = value.Volume
             };
 
-            if (creatingInfo.RemindSeconds <= 5)
+            if (creatingInfo.TransportSeconds <= 5)
             {
                 _logger.LogInformation("submit order");
-                var order = _orderService.CreateOrder(creatingInfo, game, "111222");
+                var order = _orderService.CreateOrder(creatingInfo, game, User.Identity.Name);
                 return new OrderCreatedResult
                 {
                     Id = order.Id,
-                    OpenPrice = order.OpenInfo.OpenPrice.Bid,
+                    OpenPrice = order.OpenInfo.Price.Bid,
                     ExpireDateTime = order.CloseTime
                 };
             }

@@ -9,7 +9,7 @@ namespace Orders.System.Demo.Stores
     {
         public Game Get(int gameId)
         {
-            return new Game
+            return new Game("1分钟", new Symbol())
             {
                 Cycle = 1,
                 Name = "1分钟",
@@ -22,12 +22,11 @@ namespace Orders.System.Demo.Stores
         {
             return new List<Game>
             {
-                new Game
+                new Game("1分钟", new Symbol())
                 {
                     Cycle = 1,
                     Name = "1分钟",
                     Rate = 0.92m,
-                    Symbol = symbol,
                     Id = 1
                 }
             };

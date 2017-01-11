@@ -27,16 +27,32 @@ namespace Orders.Test
         private readonly Game _game;
 
         [Fact]
-        public void CloseOrder_down_lost()
+        public void CreateOrder_test()
         {
-            var order = new Order(1, Direction.Down, "test"); // { User = "tet" };
+            var order = new Order(1, Direction.Down, "test"); 
+
+            Assert.Equal(OrderStatus.Created, order.Status);
+            Assert.Equal(1, order.Volume);
+            Assert.NotEqual(DateTime.MinValue, order.CreateTime);
+        }
+        [Fact]
+        public void OpenOrder_Test()
+        {
+            var order = new Order(1, Direction.Down, "test"); 
 
             order.Open(_openPrice, _game);
 
-            var c = new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds(), DateTime.Now);
-            c.Bid = 1.1m;
-            order.Close(c);
+            Assert.NotNull(order.ConfirmDateTime);
+            Assert.NotEqual(DateTime.MinValue, order.CreateTime);
+        }
+        [Fact]
+        public void CloseOrder_down_lost()
+        {
+            var order = new Order(1, Direction.Down, "test");
+            order.Open(_openPrice, _game);
 
+            var quotation = new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds(), DateTime.Now) { Bid = 1.1m };
+            order.Close(quotation);
             Assert.True(order.Profit < 0);
         }
 
@@ -47,8 +63,7 @@ namespace Orders.Test
 
             order.Open(_openPrice, _game);
 
-            var c = new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds(), DateTime.Now);
-            c.Bid = 0.9m;
+            var c = new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds(), DateTime.Now) { Bid = 0.9m };
             order.Close(c);
 
             Assert.True(order.Profit > 0);
@@ -77,7 +92,7 @@ namespace Orders.Test
 
             order.Open(_openPrice, _game);
 
-            var c = new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds(), DateTime.Now) {Bid = 1.1m};
+            var c = new Quotation(_symbol, DateTimeOffset.Now.ToUnixTimeSeconds(), DateTime.Now) { Bid = 1.1m };
             order.Close(c);
 
             Assert.True(order.Profit > 0);
@@ -91,7 +106,7 @@ namespace Orders.Test
             order.Open(_openPrice, _game);
 
             Assert.Equal(OrderStatus.Opening, order.Status);
-            Assert.Equal(_openPrice, order.OpenInfo.OpenPrice);
+            Assert.Equal(_openPrice, order.OpenInfo.Price);
         }
     }
 }

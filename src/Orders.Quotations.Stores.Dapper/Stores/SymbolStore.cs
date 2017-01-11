@@ -14,10 +14,7 @@ namespace Orders.Quotations.Stores
         {
         }
 
-        public override IQueryable<Symbol> Entities
-        {
-            get { throw new NotImplementedException(); }
-        }
+  
 
         public IEnumerable<Symbol> Symbols
         {
@@ -28,7 +25,7 @@ namespace Orders.Quotations.Stores
             }
         }
 
-        public override Symbol Get(int symbolId)
+        public Symbol Get(int symbolId)
         {
             var q =
                 "select Id,Name,Symbol as Code,DotDigit Sclar,BoInterval from TB_Biz_Symbols where Status=1 and id=@id";
@@ -47,19 +44,5 @@ namespace Orders.Quotations.Stores
         }
 
 
-        public override void Update(Symbol t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Add(Symbol t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(Symbol t)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

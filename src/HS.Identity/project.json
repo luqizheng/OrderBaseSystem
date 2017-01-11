@@ -1,10 +1,12 @@
 {
   "version": "1.0.0-*",
-
+  "buildOptions": {
+    "debugType": "portable"
+  },
   "dependencies": {
     "Microsoft.AspNetCore.Identity": "1.1.0",
     "NETStandard.Library": "1.6.1",
-    "Ornament.Uow.DbConnection": "1.1.0"
+    "Ornament.Uow.DbConnection": "1.1.2"
   },
 
   "frameworks": {
