@@ -21,6 +21,11 @@ namespace Orders.Quotations
     {
         M1,
         M5,
-        M15
+        M15,
+        M30,
+        H1,
+        D1,
+        W1,
+        M1,
     }
 }

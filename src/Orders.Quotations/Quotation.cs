@@ -50,8 +50,7 @@ namespace Orders.Quotations
         public int Spread
         {
             get { return _spread; }
-            set
-            {
+            set        {
                 _spread = value;
                 _ask = null;
             }
@@ -70,8 +69,7 @@ namespace Orders.Quotations
         public decimal Bid
         {
             get { return _bid; }
-            set
-            {
+            set {
                 _bid = value;
                 _ask = null;
             }
@@ -82,6 +80,10 @@ namespace Orders.Quotations
         /// </summary>
         public decimal SrcBid { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>    
         public bool Adjusted { get; set; }
 
         public string BidWithFormat
